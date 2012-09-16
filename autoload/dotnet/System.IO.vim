@@ -409,7 +409,11 @@ call dotnet#class('FileStream', 'Stream', [
   \ ])
 
 call dotnet#class('MemoryStream', 'Stream', [ 
-  \ dotnet#method('MemoryStream(', ''),
+  \ dotnet#method('MemoryStream(', "
+  \       void  MemoryStream(uint8[] buffer,
+  \                            int32 index,
+  \                            int32 count)"
+  \ ),
   \ dotnet#method('get_CanRead(', ''),
   \ dotnet#method('get_CanSeek(', ''),
   \ dotnet#method('get_CanWrite(', ''),
