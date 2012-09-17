@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.NetworkInformation')
 
 call dotnet#class('IcmpV4Statistics', 'Object', [ 
   \ dotnet#method('get_AddressMaskRepliesReceived(', ''),

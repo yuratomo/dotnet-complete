@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Activation')
 
 call dotnet#class('UrlAttribute', 'ContextAttribute', [ 
   \ dotnet#method('UrlAttribute(', ''),

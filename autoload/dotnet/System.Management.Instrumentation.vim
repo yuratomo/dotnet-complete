@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Management.Instrumentation')
 
 call dotnet#class('ManagementEntityAttribute', 'Attribute', [ 
   \ dotnet#method('ManagementEntityAttribute(', ''),

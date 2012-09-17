@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.Contracts')
 
 call dotnet#class('PureAttribute', 'Attribute', [ 
   \ dotnet#method('PureAttribute(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Text')
 
 call dotnet#class('StringBuilder', 'Object', [ 
   \ dotnet#field('m_ChunkChars', 'char[]'),

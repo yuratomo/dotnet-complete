@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security')
 
 call dotnet#class('SecurityElement', 'Object', [ 
   \ dotnet#field('m_strTag', 'string'),

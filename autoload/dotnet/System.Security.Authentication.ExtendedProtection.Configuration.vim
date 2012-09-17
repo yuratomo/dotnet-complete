@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Authentication.ExtendedProtection.Configuration')
 
 call dotnet#class('ExtendedProtectionPolicyElement', 'ConfigurationElement', [ 
   \ dotnet#method('ExtendedProtectionPolicyElement(', ''),

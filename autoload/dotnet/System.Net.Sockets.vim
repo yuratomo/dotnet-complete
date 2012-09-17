@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Sockets')
 
 call dotnet#class('SocketException', 'Win32Exception', [ 
   \ dotnet#method('SocketException(', ''),

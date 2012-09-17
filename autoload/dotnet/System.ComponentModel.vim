@@ -1,3 +1,4 @@
+call dotnet#namespace('System.ComponentModel')
 
 call dotnet#class('CurrentChangedEventManager', 'WeakEventManager', [ 
   \ dotnet#method('AddListener(', ''),

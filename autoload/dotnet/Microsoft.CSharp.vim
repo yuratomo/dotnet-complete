@@ -1,3 +1,4 @@
+call dotnet#namespace('Microsoft.CSharp')
 
 call dotnet#class('CSharpCodeProvider', 'CodeDomProvider', [ 
   \ dotnet#method('CSharpCodeProvider(', ''),

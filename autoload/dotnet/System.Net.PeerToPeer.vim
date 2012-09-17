@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.PeerToPeer')
 
 call dotnet#class('Cloud', 'Object', [ 
   \ dotnet#method('get_Name(', ''),

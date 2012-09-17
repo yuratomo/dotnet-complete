@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Converters')
 
 call dotnet#class('Int32RectValueSerializer', 'ValueSerializer', [ 
   \ dotnet#method('CanConvertFromString(', ''),

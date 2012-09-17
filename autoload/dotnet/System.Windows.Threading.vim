@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Threading')
 
 call dotnet#class('DispatcherObject', 'Object', [ 
   \ dotnet#method('get_Dispatcher(', ''),

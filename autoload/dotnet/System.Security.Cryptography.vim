@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Cryptography')
 
 call dotnet#class('KeySizes', 'Object', [ 
   \ dotnet#method('get_MinSize(', ''),

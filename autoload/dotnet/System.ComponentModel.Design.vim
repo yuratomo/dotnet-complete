@@ -1,3 +1,4 @@
+call dotnet#namespace('System.ComponentModel.Design')
 
 call dotnet#class('TypeDescriptionProviderService', 'Object', [ 
   \ dotnet#method('TypeDescriptionProviderService(', ''),

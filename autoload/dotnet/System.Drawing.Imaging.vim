@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing.Imaging')
 
 call dotnet#class('BitmapData', 'Object', [ 
   \ dotnet#method('get_Width(', ''),

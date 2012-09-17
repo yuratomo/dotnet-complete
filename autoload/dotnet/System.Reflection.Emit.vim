@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Reflection.Emit')
 
 call dotnet#class('AssemblyBuilder', 'Assembly', [ 
   \ dotnet#field('m_assemblyData', 'AssemblyBuilderData'),

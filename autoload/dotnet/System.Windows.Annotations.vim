@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Annotations')
 
 call dotnet#class('TextAnchor', 'Object', [ 
   \ dotnet#method('TextAnchor(', ''),

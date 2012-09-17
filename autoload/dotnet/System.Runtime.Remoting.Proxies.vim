@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Proxies')
 
 call dotnet#class('ProxyAttribute', 'Attribute', [ 
   \ dotnet#method('ProxyAttribute(', ''),

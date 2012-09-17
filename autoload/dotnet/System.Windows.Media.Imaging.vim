@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.Imaging')
 
 call dotnet#class('BitmapCodecInfo', 'Object', [ 
   \ dotnet#method('BitmapCodecInfo(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.Eventing.Reader')
 
 call dotnet#class('EventBookmark', 'Object', [ 
   \ dotnet#method('EventBookmark(', ''),

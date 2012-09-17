@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media')
 
 call dotnet#class('DisableDpiAwarenessAttribute', 'Attribute', [ 
   \ dotnet#method('DisableDpiAwarenessAttribute(', ''),

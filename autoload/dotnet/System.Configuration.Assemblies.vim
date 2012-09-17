@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Configuration.Assemblies')
 
 call dotnet#class('AssemblyHash', 'ValueType', [ 
   \ dotnet#field('_Algorithm', 'AssemblyHashAlgorithm'),

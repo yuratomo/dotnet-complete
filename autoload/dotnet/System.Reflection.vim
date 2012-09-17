@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Reflection')
 
 call dotnet#class('Binder', 'Object', [ 
   \ dotnet#method('ChangeType(', ''),

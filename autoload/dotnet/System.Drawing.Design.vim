@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing.Design')
 
 call dotnet#class('CategoryNameCollection', 'ReadOnlyCollectionBase', [ 
   \ dotnet#method('CategoryNameCollection(', ''),

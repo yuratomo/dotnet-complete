@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Shapes')
 
 call dotnet#class('Shape', 'FrameworkElement', [ 
   \ dotnet#method('Shape(', ''),

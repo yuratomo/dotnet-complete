@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Authentication')
 
 call dotnet#class('AuthenticationException', 'SystemException', [ 
   \ dotnet#method('AuthenticationException(', ''),

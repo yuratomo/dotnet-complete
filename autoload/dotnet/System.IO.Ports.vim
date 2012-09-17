@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.Ports')
 
 call dotnet#class('SerialErrorReceivedEventArgs', 'EventArgs', [ 
   \ dotnet#method('get_EventType(', ''),

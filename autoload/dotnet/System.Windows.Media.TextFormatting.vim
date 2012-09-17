@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.TextFormatting')
 
 call dotnet#class('TextLine', 'Object', [ 
   \ dotnet#method('Dispose(', ''),

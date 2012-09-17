@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Annotations.Storage')
 
 call dotnet#class('AnnotationStore', 'Object', [ 
   \ dotnet#method('AnnotationStore(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Timers')
 
 call dotnet#class('ElapsedEventArgs', 'EventArgs', [ 
   \ dotnet#method('get_SignalTime(', ''),

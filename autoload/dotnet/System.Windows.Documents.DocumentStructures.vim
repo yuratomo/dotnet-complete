@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Documents.DocumentStructures')
 
 call dotnet#class('BlockElement', 'Object', [ 
   \ dotnet#field('_elementType', 'FixedElement/ElementType'),

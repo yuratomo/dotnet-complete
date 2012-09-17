@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Hosting')
 
 call dotnet#class('ApplicationActivator', 'Object', [ 
   \ dotnet#method('ApplicationActivator(', ''),

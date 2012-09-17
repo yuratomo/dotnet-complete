@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Collections.ObjectModel')
 
 call dotnet#class('Collection', 'Object', [ 
   \ dotnet#method('Collection`1(', ''),

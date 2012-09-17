@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.MemoryMappedFiles')
 
 call dotnet#class('MemoryMappedFile', 'Object', [ 
   \ dotnet#method('OpenExisting(', ''),

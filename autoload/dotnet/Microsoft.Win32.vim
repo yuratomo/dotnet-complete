@@ -1,3 +1,4 @@
+call dotnet#namespace('Microsoft.Win32')
 
 call dotnet#class('Registry', 'Object', [ 
   \ dotnet#method('Registry(', ''),

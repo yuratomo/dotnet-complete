@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Markup.Primitives')
 
 call dotnet#class('MarkupObject', 'Object', [ 
   \ dotnet#method('MarkupObject(', ''),

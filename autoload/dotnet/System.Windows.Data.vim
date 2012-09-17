@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Data')
 
 call dotnet#class('DataSourceProvider', 'Object', [ 
   \ dotnet#method('DataSourceProvider(', ''),

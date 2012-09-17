@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Input')
 
 call dotnet#class('KeyConverter', 'TypeConverter', [ 
   \ dotnet#method('CanConvertFrom(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Interop')
 
 call dotnet#class('MSG', 'ValueType', [ 
   \ dotnet#field('_hwnd', 'int'),

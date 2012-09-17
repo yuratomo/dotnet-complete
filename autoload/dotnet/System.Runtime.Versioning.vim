@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Versioning')
 
 call dotnet#class('ComponentGuaranteesAttribute', 'Attribute', [ 
   \ dotnet#method('ComponentGuaranteesAttribute(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Messaging')
 
 call dotnet#class('AsyncResult', 'Object', [ 
   \ dotnet#method('AsyncResult(', ''),

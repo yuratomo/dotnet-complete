@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Automation')
 
 call dotnet#class('AutomationProperties', 'Object', [ 
   \ dotnet#method('SetAutomationId(', ''),

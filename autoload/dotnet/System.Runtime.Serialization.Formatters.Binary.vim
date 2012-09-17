@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Serialization.Formatters.Binary')
 
 call dotnet#class('BinaryFormatter', 'Object', [ 
   \ dotnet#field('m_surrogates', 'ISurrogateSelBinaryFormatter'),

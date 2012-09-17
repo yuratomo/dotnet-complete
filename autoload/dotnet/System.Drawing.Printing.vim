@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing.Printing')
 
 call dotnet#class('PrintController', 'Object', [ 
   \ dotnet#method('PrintController(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.CompilerServices')
 
 call dotnet#class('StringFreezingAttribute', 'Attribute', [ 
   \ dotnet#method('StringFreezingAttribute(', ''),

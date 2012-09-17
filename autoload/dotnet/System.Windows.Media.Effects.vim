@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.Effects')
 
 call dotnet#class('Effect', 'Animatable', [ 
   \ dotnet#method('Effect(', ''),

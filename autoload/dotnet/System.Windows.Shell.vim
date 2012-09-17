@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Shell')
 
 call dotnet#class('JumpItem', 'Object', [ 
   \ dotnet#method('JumpItem(', ''),

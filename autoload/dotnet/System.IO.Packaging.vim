@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.Packaging')
 
 call dotnet#class('PackageProperties', 'Object', [ 
   \ dotnet#method('Dispose(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Cryptography.X509Certificates')
 
 call dotnet#class('X509Certificate', 'Object', [ 
   \ dotnet#method('X509Certificate(', ''),

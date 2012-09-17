@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Navigation')
 
 call dotnet#class('BaseUriHelper', 'Object', [ 
   \ dotnet#method('GetBaseUri(', ''),

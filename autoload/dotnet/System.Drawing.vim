@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing')
 
 call dotnet#class('Image', 'MarshalByRefObject', [ 
   \ dotnet#method('Image(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.Contracts.Internal')
 
 call dotnet#class('ContractHelper', 'Object', [ 
   \ dotnet#method('RaiseContractFailedEvent(', ''),

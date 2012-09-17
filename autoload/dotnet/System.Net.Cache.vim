@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Cache')
 
 call dotnet#class('RequestCachePolicy', 'Object', [ 
   \ dotnet#method('RequestCachePolicy(', ''),

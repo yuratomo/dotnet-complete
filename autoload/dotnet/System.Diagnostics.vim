@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics')
 
 call dotnet#class('ConditionalAttribute', 'Attribute', [ 
   \ dotnet#method('ConditionalAttribute(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.CodeDom.Compiler')
 
 call dotnet#class('CodeGenerator', 'Object', [ 
   \ dotnet#method('get_CurrentClass(', ''),

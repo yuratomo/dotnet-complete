@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Documents')
 
 call dotnet#class('ContentPosition', 'Object', [ 
   \ dotnet#method('ContentPosition(', ''),

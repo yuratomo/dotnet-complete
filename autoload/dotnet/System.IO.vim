@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO')
 
 call dotnet#class('Stream', 'MarshalByRefObject', [ 
   \ dotnet#method('Stream(', ''),

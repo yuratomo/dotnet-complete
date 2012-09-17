@@ -1,3 +1,4 @@
+call dotnet#namespace('System')
 
 call dotnet#class('Exception', 'Object', [ 
   \ dotnet#field('value__', 'int32'),

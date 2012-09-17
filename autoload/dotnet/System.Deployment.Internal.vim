@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Deployment.Internal')
 
 call dotnet#class('InternalApplicationIdentityHelper', 'Object', [ 
   \ dotnet#method('GetInternalAppId(', ''),

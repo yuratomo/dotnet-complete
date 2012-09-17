@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Collections.Generic')
 
 call dotnet#class('Comparer', 'Object', [ 
   \ dotnet#method('Compare(', ''),

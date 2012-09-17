@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Serialization')
 
 call dotnet#class('FormatterConverter', 'Object', [ 
   \ dotnet#method('FormatterConverter(', ''),

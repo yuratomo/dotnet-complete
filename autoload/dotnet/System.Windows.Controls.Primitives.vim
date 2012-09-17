@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Controls.Primitives')
 
 call dotnet#class('MenuBase', 'ItemsControl', [ 
   \ dotnet#method('MenuBase(', ''),

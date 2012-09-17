@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Channels')
 
 call dotnet#class('ChannelServices', 'Object', [ 
   \ dotnet#method('ChannelServices(', ''),

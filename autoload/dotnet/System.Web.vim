@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Web')
 
 call dotnet#class('AspNetHostingPermissionAttribute', 'CodeAccessSecurityAttribute', [ 
   \ dotnet#method('AspNetHostingPermissionAttribute(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Input.StylusPlugIns')
 
 call dotnet#class('StylusPlugIn', 'Object', [ 
   \ dotnet#method('StylusPlugIn(', ''),

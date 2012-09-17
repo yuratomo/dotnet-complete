@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Mail')
 
 call dotnet#class('AttachmentBase', 'Object', [ 
   \ dotnet#method('AttachmentBase(', ''),

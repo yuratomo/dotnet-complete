@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.SymbolStore')
 
 call dotnet#class('SymDocumentType', 'Object', [ 
   \ dotnet#method('SymDocumentType(', ''),

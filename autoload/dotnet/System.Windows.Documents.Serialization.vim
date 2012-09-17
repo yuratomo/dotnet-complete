@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Documents.Serialization')
 
 call dotnet#class('SerializerProvider', 'Object', [ 
   \ dotnet#method('SerializerProvider(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.CodeAnalysis')
 
 call dotnet#class('SuppressMessageAttribute', 'Attribute', [ 
   \ dotnet#method('SuppressMessageAttribute(', ''),

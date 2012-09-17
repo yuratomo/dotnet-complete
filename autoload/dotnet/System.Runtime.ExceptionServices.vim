@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.ExceptionServices')
 
 call dotnet#class('HandleProcessCorruptedStateExceptionsAttribute', 'Attribute', [ 
   \ dotnet#method('HandleProcessCorruptedStateExceptionsAttribute(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Collections.Specialized')
 
 call dotnet#class('CollectionChangedEventManager', 'WeakEventManager', [ 
   \ dotnet#method('AddListener(', ''),

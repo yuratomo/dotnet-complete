@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Permissions')
 
 call dotnet#class('EnvironmentPermission', 'CodeAccessPermission', [ 
   \ dotnet#method('EnvironmentPermission(', ''),

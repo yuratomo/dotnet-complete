@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting')
 
 call dotnet#class('ObjRef', 'Object', [ 
   \ dotnet#field('uri', 'string'),

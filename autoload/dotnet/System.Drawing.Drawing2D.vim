@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing.Drawing2D')
 
 call dotnet#class('CustomLineCap', 'MarshalByRefObject', [ 
   \ dotnet#method('CustomLineCap(', ''),

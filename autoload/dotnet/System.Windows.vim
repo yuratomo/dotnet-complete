@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows')
 
 call dotnet#class('Expression', 'Object', [ 
   \ dotnet#method('Expression(', ''),

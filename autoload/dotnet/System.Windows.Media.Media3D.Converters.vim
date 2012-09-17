@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.Media3D.Converters')
 
 call dotnet#class('Matrix3DValueSerializer', 'ValueSerializer', [ 
   \ dotnet#method('CanConvertFromString(', ''),

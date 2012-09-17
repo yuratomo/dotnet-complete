@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Policy')
 
 call dotnet#class('EvidenceBase', 'Object', [ 
   \ dotnet#method('EvidenceBase(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Threading')
 
 call dotnet#class('AbandonedMutexException', 'SystemException', [ 
   \ dotnet#method('AbandonedMutexException(', ''),

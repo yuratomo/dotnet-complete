@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Dynamic')
 
 call dotnet#class('DynamicMetaObjectBinder', 'CallSiteBinder', [ 
   \ dotnet#method('DynamicMetaObjectBinder(', ''),

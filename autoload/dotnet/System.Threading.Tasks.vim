@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Threading.Tasks')
 
 call dotnet#class('Task', 'Object', [ 
   \ dotnet#field('m_internalCancellationRequested', 'IsVolatile)'),

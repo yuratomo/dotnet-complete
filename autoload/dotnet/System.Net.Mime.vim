@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Mime')
 
 call dotnet#class('ContentDisposition', 'Object', [ 
   \ dotnet#method('ContentDisposition(', ''),

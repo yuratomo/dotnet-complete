@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Resources')
 
 call dotnet#class('MissingManifestResourceException', 'SystemException', [ 
   \ dotnet#method('MissingManifestResourceException(', ''),

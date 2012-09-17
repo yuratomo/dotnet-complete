@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.Eventing')
 
 call dotnet#class('EventDescriptor', 'ValueType', [ 
   \ dotnet#field('m_id', 'uint16'),

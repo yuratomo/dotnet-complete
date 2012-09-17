@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime')
 
 call dotnet#class('MemoryFailPoint', 'CriticalFinalizerObject', [ 
   \ dotnet#method('MemoryFailPoint(', ''),

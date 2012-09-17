@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Globalization')
 
 call dotnet#class('Calendar', 'Object', [ 
   \ dotnet#field('m_currentEraValue', 'int32'),

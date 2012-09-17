@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Diagnostics.PerformanceData')
 
 call dotnet#class('CounterData', 'Object', [ 
   \ dotnet#method('get_Value(', ''),

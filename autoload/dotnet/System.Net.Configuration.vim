@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Configuration')
 
 call dotnet#class('AuthenticationModuleElement', 'ConfigurationElement', [ 
   \ dotnet#method('AuthenticationModuleElement(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.Security')
 
 call dotnet#class('AuthenticatedStream', 'Stream', [ 
   \ dotnet#method('AuthenticatedStream(', ''),

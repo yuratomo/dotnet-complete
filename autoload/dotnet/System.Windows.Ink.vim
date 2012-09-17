@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Ink')
 
 call dotnet#class('DrawingAttributeIds', 'Object', [ 
   \ dotnet#method('DrawingAttributeIds(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Automation.Peers')
 
 call dotnet#class('HostedWindowWrapper', 'Object', [ 
   \ dotnet#method('HostedWindowWrapper(', ''),

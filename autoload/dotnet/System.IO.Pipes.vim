@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.Pipes')
 
 call dotnet#class('PipeStream', 'Stream', [ 
   \ dotnet#method('PipeStream(', ''),

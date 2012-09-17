@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.ConstrainedExecution')
 
 call dotnet#class('CriticalFinalizerObject', 'Object', [ 
   \ dotnet#method('CriticalFinalizerObject(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.ComponentModel.Design.Serialization')
 
 call dotnet#class('ComponentSerializationService', 'Object', [ 
   \ dotnet#method('Serialize(', ''),

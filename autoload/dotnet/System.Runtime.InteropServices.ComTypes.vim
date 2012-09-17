@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.InteropServices.ComTypes')
 
 call dotnet#class('BIND_OPTS', 'ValueType', [ 
   \ dotnet#field('cbStruct', 'int32'),

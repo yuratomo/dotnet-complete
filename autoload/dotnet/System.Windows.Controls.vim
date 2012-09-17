@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Controls')
 
 call dotnet#class('Panel', 'FrameworkElement', [ 
   \ dotnet#method('Panel(', ''),

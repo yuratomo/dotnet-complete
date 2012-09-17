@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Principal')
 
 call dotnet#class('GenericIdentity', 'Object', [ 
   \ dotnet#method('GenericIdentity(', ''),

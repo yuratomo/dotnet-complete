@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Markup.Localizer')
 
 call dotnet#class('BamlLocalizabilityResolver', 'Object', [ 
   \ dotnet#method('ResolveFormattingTagToClass(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Metadata.W3cXsd2001')
 
 call dotnet#class('SoapDateTime', 'Object', [ 
   \ dotnet#method('get_XsdType(', ''),

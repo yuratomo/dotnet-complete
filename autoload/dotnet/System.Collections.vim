@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Collections')
 
 call dotnet#class('CaseInsensitiveComparer', 'Object', [ 
   \ dotnet#method('CaseInsensitiveComparer(', ''),

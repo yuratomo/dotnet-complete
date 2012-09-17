@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.InteropServices')
 
 call dotnet#class('SafeHandle', 'CriticalFinalizerObject', [ 
   \ dotnet#field('handle', 'int'),

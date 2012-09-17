@@ -45,6 +45,15 @@ function! dotnet#class_to_compitem(member)
     \}
 endfunction
 
+let s:namespace = {}
+function! dotnet#namespace(name)
+" let s:namespace[ a:name ] = {
+"   \ 'name'   : a:name,
+"   \ 'kind'   : 't',
+"   \ 'members': a:members,
+"   \ }
+endfunction
+
 let s:class = {}
 function! dotnet#class(name, extend, members)
   let s:class[ a:name ] = {

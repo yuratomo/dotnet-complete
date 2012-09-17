@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Metadata')
 
 call dotnet#class('SoapAttribute', 'Attribute', [ 
   \ dotnet#field('ProtXmlNamespace', 'string'),

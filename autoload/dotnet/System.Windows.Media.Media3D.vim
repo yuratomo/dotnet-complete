@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.Media3D')
 
 call dotnet#class('GeneralTransform3D', 'Animatable', [ 
   \ dotnet#method('GeneralTransform3D(', ''),

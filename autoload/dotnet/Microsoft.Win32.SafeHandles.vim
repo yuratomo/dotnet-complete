@@ -1,3 +1,4 @@
+call dotnet#namespace('Microsoft.Win32.SafeHandles')
 
 call dotnet#class('SafeHandleZeroOrMinusOneIsInvalid', 'SafeHandle', [ 
   \ dotnet#method('SafeHandleZeroOrMinusOneIsInvalid(', ''),

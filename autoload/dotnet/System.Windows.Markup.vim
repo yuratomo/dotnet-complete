@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Markup')
 
 call dotnet#class('DesignerSerializationOptionsAttribute', 'Attribute', [ 
   \ dotnet#method('DesignerSerializationOptionsAttribute(', ''),

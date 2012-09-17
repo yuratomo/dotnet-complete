@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.IsolatedStorage')
 
 call dotnet#class('IsolatedStorage', 'MarshalByRefObject', [ 
   \ dotnet#method('IsRoaming(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('Microsoft.VisualBasic')
 
 call dotnet#class('VBCodeProvider', 'CodeDomProvider', [ 
   \ dotnet#method('VBCodeProvider(', ''),

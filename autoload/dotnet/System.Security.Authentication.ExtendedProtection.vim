@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.Authentication.ExtendedProtection')
 
 call dotnet#class('ChannelBinding', 'SafeHandleZeroOrMinusOneIsInvalid', [ 
   \ dotnet#method('ChannelBinding(', ''),

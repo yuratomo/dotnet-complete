@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Linq')
 
 call dotnet#class('Queryable', 'Object', [ 
   \ dotnet#method('AsQueryable(', ''),

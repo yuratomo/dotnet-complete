@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Media.Animation')
 
 call dotnet#class('Animatable', 'Freezable', [ 
   \ dotnet#method('Animatable(', ''),

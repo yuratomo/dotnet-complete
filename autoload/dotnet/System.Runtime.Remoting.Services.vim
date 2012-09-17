@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Services')
 
 call dotnet#class('EnterpriseServicesHelper', 'Object', [ 
   \ dotnet#method('WrapIUnknownWithComObject(', ''),

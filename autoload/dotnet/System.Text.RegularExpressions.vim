@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Text.RegularExpressions')
 
 call dotnet#class('Regex', 'Object', [ 
   \ dotnet#field('pattern', 'string'),

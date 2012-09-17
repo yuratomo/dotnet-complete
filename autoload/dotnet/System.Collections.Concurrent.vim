@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Collections.Concurrent')
 
 call dotnet#class('ConcurrentDictionary', 'Object', [ 
   \ dotnet#method('ConcurrentDictionary`2(', ''),

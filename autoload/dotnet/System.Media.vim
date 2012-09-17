@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Media')
 
 call dotnet#class('SoundPlayer', 'Component', [ 
   \ dotnet#method('SoundPlayer(', ''),

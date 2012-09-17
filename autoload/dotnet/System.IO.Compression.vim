@@ -1,3 +1,4 @@
+call dotnet#namespace('System.IO.Compression')
 
 call dotnet#class('DeflateStream', 'Stream', [ 
   \ dotnet#method('DeflateStream(', ''),

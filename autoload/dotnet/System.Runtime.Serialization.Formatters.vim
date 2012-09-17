@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Serialization.Formatters')
 
 call dotnet#class('InternalRM', 'Object', [ 
   \ dotnet#method('InfoSoap(', ''),

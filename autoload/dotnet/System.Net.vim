@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net')
 
 call dotnet#class('AuthenticationManager', 'Object', [ 
   \ dotnet#method('set_CredentialPolicy(', ''),

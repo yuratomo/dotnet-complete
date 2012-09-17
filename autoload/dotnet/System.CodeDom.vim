@@ -1,3 +1,4 @@
+call dotnet#namespace('System.CodeDom')
 
 call dotnet#class('CodeObject', 'Object', [ 
   \ dotnet#method('CodeObject(', ''),

@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Linq.Expressions')
 
 call dotnet#class('ExpressionVisitor', 'Object', [ 
   \ dotnet#method('ExpressionVisitor(', ''),

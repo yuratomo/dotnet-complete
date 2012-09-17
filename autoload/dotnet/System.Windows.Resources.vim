@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Resources')
 
 call dotnet#class('AssemblyAssociatedContentFileAttribute', 'Attribute', [ 
   \ dotnet#method('AssemblyAssociatedContentFileAttribute(', ''),

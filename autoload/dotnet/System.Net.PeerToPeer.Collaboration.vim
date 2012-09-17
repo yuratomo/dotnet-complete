@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Net.PeerToPeer.Collaboration')
 
 call dotnet#class('CreateContactCompletedEventArgs', 'AsyncCompletedEventArgs', [ 
   \ dotnet#method('get_PeerContact(', ''),

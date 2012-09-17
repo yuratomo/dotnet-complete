@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Lifetime')
 
 call dotnet#class('ClientSponsor', 'MarshalByRefObject', [ 
   \ dotnet#method('ClientSponsor(', ''),

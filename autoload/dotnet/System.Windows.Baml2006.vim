@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Windows.Baml2006')
 
 call dotnet#class('Baml2006Reader', 'XamlReader', [ 
   \ dotnet#method('Baml2006Reader(', ''),

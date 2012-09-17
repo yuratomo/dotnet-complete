@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.RightsManagement')
 
 call dotnet#class('ContentGrant', 'Object', [ 
   \ dotnet#method('ContentGrant(', ''),

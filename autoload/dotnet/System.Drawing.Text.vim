@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Drawing.Text')
 
 call dotnet#class('FontCollection', 'Object', [ 
   \ dotnet#method('Dispose(', ''),

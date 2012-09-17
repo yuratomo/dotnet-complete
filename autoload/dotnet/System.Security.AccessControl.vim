@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Security.AccessControl')
 
 call dotnet#class('GenericAce', 'Object', [ 
   \ dotnet#field('_indexInAcl', 'uint16'),

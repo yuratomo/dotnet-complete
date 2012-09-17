@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Configuration')
 
 call dotnet#class('SchemeSettingElement', 'ConfigurationElement', [ 
   \ dotnet#method('get_Name(', ''),

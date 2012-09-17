@@ -1,3 +1,4 @@
+call dotnet#namespace('System.Runtime.Remoting.Contexts')
 
 call dotnet#class('ContextAttribute', 'Attribute', [ 
   \ dotnet#field('AttributeName', 'string'),
