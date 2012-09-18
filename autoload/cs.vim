@@ -1,4 +1,4 @@
-let [ s:MODE_CLASS , s:MODE_MEMBER ] = range(2)
+let [ s:MODE_CLASS , s:MODE_MEMBER, s:MODE_ENUM, s:MODE_NEW_CLASS ] = range(4)
 let s:xaml_complete_mode = s:MODE_CLASS
 
 let s:type = ''
@@ -18,7 +18,7 @@ function! cs#complete(findstart, base)
 
     " resolve complete mode [CLASS/MEMBER]
     let idx = cur
-    while idx > 0 && line[idx] !~ '[. \t]'
+    while idx > 0 && line[idx] !~ '[. \t(;]'
       let idx -= 1
     endwhile
     if cur <= 0 || line[idx] =~ '[ \t]'
@@ -29,7 +29,7 @@ function! cs#complete(findstart, base)
       let s:xaml_complete_mode = s:MODE_CLASS
     endif
 
-    " resolve pstart and vstart
+    " find pstart and vstart
     let vstart = cur
     let pstart = -1
     while vstart > 0 && line[vstart - 1] !~ '[ \t"]'
@@ -50,13 +50,34 @@ function! cs#complete(findstart, base)
       endif
       let s:type = s:find_type(s:parts[0])
       let s:parts[0] = s:type
+    else
+      " value complete
+      let idx = cur - 1
+      while idx > 0 && line[idx] =~ '[ \t]'
+        let idx -= 1
+      endwhile
+      if line[idx] == '='
+        let s:xaml_complete_mode = s:MODE_ENUM
+      elseif line[idx] == 'new'
+        let s:xaml_complete_mode = s:MODE_NEW_CLASS
+      endif
     endif
+
     return pstart
 
   else
     let res = []
     if s:xaml_complete_mode == s:MODE_CLASS
       call dotnet#class_completion(a:base, res)
+      call dotnet#enum_completion(a:base, res)
+
+    elseif s:xaml_complete_mode == s:MODE_ENUM
+      call dotnet#enum_completion(a:base, res)
+
+    elseif s:xaml_complete_mode == s:MODE_NEW_CLASS
+      "call s:class_new_completion(a:base, res)
+      call s:class_completion(a:base, res)
+
     else
       call s:class_member_completion(a:base, res)
     endif
@@ -71,9 +92,14 @@ function! s:class_member_completion(base, res)
   let class = s:normalize_type(s:type)
   for part in s:parts
     if !dotnet#isClassExist(class)
-      break
+      if !dotnet#isEnumExist(class)
+        break
+      else
+        let item = dotnet#getEnum(class)
+      endif
+    else
+      let item = dotnet#getClass(class)
     endif
-    let item = s:class[ class ]
 
     if idx < len - 1
       if idx == 0
@@ -92,8 +118,8 @@ function! s:class_member_completion(base, res)
         if _break == 1
           break
         endif
-        if dotnet#isClassExist(item.extend)
-          let item = s:class[ item.extend ]
+        if has_key(item, 'extend') && dotnet#isClassExist(item.extend)
+          let item = dotnet#getClass(item.extend)
         else
           break
         endif
@@ -106,7 +132,7 @@ function! s:class_member_completion(base, res)
       endfor
 
       " find super class member
-      if item.extend != '' && item.extend != '-'
+      if has_key(item, 'extend') && item.extend != '' && item.extend != '-'
         call s:attr_completion(item.extend, a:base, a:res)
       endif
     endif
@@ -150,7 +176,7 @@ function! s:attr_completion(tag, base, res)
     return
   endif
 
-  let item = s:class[ a:tag ]
+  let item = dotnet#getClass( a:tag)
   for member in item.members
     if member.name =~ '^' . a:base
       call add(a:res, dotnet#member_to_compitem(item.name, member))
