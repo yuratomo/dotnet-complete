@@ -8,7 +8,7 @@ function! cs#complete(findstart, base)
   if a:findstart
     " find start of word
     "
-    "     variable.property1.property2.hoge
+    "     variable.property1.property2.property3
     "     A                            A
     "     |                            |
     "     vstart                       pstart
@@ -16,6 +16,7 @@ function! cs#complete(findstart, base)
     let line = getline('.')
     let cur = col('.') - 1
 
+    " resolve complete mode [CLASS/MEMBER]
     let idx = cur
     while idx > 0 && line[idx] !~ '[. \t]'
       let idx -= 1
@@ -28,6 +29,7 @@ function! cs#complete(findstart, base)
       let s:xaml_complete_mode = s:MODE_CLASS
     endif
 
+    " resolve pstart and vstart
     let vstart = cur
     let pstart = -1
     while vstart > 0 && line[vstart - 1] !~ '[ \t"]'
@@ -40,6 +42,7 @@ function! cs#complete(findstart, base)
       let pstart = vstart
     endif
 
+    " separate variable by dot and resolve type.
     let s:parts = split(line[ vstart : cur ], '\.')
     if !empty(s:parts)
       if line[cur-1] == '.'
@@ -55,19 +58,19 @@ function! cs#complete(findstart, base)
     if s:xaml_complete_mode == s:MODE_CLASS
       call dotnet#class_completion(a:base, res)
     else
-      call s:class_item_completion(a:base, res)
+      call s:class_member_completion(a:base, res)
     endif
     return res
 
   endif
 endfunction
 
-function! s:class_item_completion(base, res)
+function! s:class_member_completion(base, res)
   let len = len(s:parts)
   let idx = 0
   let class = s:normalize_type(s:type)
   for part in s:parts
-    if !exists('s:class[ class ]')
+    if !dotnet#isClassExist(class)
       break
     endif
     let item = s:class[ class ]
@@ -89,7 +92,7 @@ function! s:class_item_completion(base, res)
         if _break == 1
           break
         endif
-        if exists('s:class[ item.extend ]')
+        if dotnet#isClassExist(item.extend)
           let item = s:class[ item.extend ]
         else
           break
@@ -117,12 +120,12 @@ function! s:normalize_type(type)
 endfunction
 
 function! s:find_type(var)
-  let type = ''
+  let type = a:var
   let endl = line('.')
   let l = 0
   while l < endl
     let line = getline(l)
-
+    let line = substitute(line, '<.\{-\}>','','g')
     if line =~ '\w\+[ \t]\+\<' . a:var . '\>.*;'
       let parts = split(line, '[. \t;=]\+')
       let pre = ''
@@ -143,7 +146,7 @@ function! s:find_type(var)
 endfunction
 
 function! s:attr_completion(tag, base, res)
-  if !exists('s:class[ a:tag ]')
+  if !dotnet#isClassExist(a:tag)
     return
   endif
 
@@ -159,4 +162,4 @@ function! s:attr_completion(tag, base, res)
   endif
 endfunction
 
-let [ s:class, s:enum, s:binding ] = dotnet#class()
+let [ s:class, s:enum, s:binding ] = dotnet#classes()

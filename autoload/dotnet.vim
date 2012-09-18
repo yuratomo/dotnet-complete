@@ -30,7 +30,7 @@ function! dotnet#member_to_compitem(class, member)
     return {
       \ 'word' : a:member.name,
       \ 'abbr' : s:abbr(a:member.name),
-      \ 'menu' : '[' . a:class . '] ' . a:member.class,
+      \ 'menu' : '[' . a:class . '] ' . a:member.class . ' ' . a:member.name . a:member.detail,
       \ 'kind' : a:member.kind,
       \}
   endif
@@ -45,13 +45,23 @@ function! dotnet#class_to_compitem(member)
     \}
 endfunction
 
-let s:namespace = {}
-function! dotnet#namespace(name)
-" let s:namespace[ a:name ] = {
-"   \ 'name'   : a:name,
-"   \ 'kind'   : 't',
-"   \ 'members': a:members,
-"   \ }
+function! dotnet#namespace(ns)
+  let parts = split(a:ns, '\.')
+  try
+    unret s:parent
+  catch /.*/
+  endtry
+  for part in parts
+    if exists('s:parent') && exists('s:parent.members') && index(s:parent.members, part) == -1
+      call add(s:parent.members, dotnet#prop(part, part))
+    endif
+
+    if !dotnet#isClassExist(part)
+      call s:namespace_item(part, '', [])
+    endif
+    let s:parent = dotnet#getClass(part)
+  endfor
+  "let s:parent = {}
 endfunction
 
 let s:class = {}
@@ -62,14 +72,26 @@ function! dotnet#class(name, extend, members)
     \ 'extend' : a:extend,
     \ 'members': a:members,
     \ }
+  if exists('s:parent') && exists('s:parent.members') && index(s:parent.members, a:name) == -1
+    call add(s:parent.members, dotnet#prop(a:name, a:name))
+  endif
+endfunction
+function! s:namespace_item(name, extend, members)
+  let s:class[ a:name ] = {
+    \ 'name'   : a:name,
+    \ 'kind'   : 't',
+    \ 'extend' : a:extend,
+    \ 'members': a:members,
+    \ }
 endfunction
 
-function! dotnet#method(name, class)
+function! dotnet#method(name, detail, class)
   return {
     \ 'type'   : s:TYPE_METHOD,
     \ 'kind'   : 'f', 
     \ 'name'   : a:name,
     \ 'class'  : a:class,
+    \ 'detail' : a:detail,
     \ }
 endfunction
 
@@ -79,6 +101,7 @@ function! dotnet#prop(name, class)
     \ 'kind'   : 'm', 
     \ 'name'   : a:name,
     \ 'class'  : a:class,
+    \ 'detail' : '',
     \ }
 endfunction
 
@@ -88,6 +111,7 @@ function! dotnet#field(name, class)
     \ 'kind'   : 'v', 
     \ 'name'   : a:name,
     \ 'class'  : a:class,
+    \ 'detail' : '',
     \ }
 endfunction
 
@@ -97,6 +121,7 @@ function! dotnet#event(name, class)
     \ 'kind'   : 'f',
     \ 'name'   : a:name,
     \ 'class'  : a:class,
+    \ 'detail' : '',
     \ }
 endfunction
 
@@ -107,6 +132,7 @@ function! dotnet#enum(name, members)
     \ 'name'   : a:name,
     \ 'kind'   : 't',
     \ 'members': a:members,
+    \ 'detail' : '',
     \ }
 endfunction
 
@@ -137,6 +163,14 @@ function! dotnet#isEvent(member)
   endif
 endfunction
 
+function! dotnet#isClassExist(name)
+  return has_key(s:class, a:name)
+endfunction
+
+function! dotnet#getClass(name)
+  return get(s:class, a:name)
+endfunction
+
 " load
 for file in split(globpath(&runtimepath, 'autoload/dotnet/*.vim'), '\n')
   exe 'echo "[dotnet]load ' . substitute(file, '^.*\','','') . '"'
@@ -145,6 +179,6 @@ for file in split(globpath(&runtimepath, 'autoload/dotnet/*.vim'), '\n')
   echo '[dotnet] loaded!'
 endfor
 
-function! dotnet#class()
+function! dotnet#classes()
   return [ s:class, s:enum, s:binding]
 endfunction

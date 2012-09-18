@@ -260,4 +260,4 @@ function! s:names()
   return names
 endfun
 
-let [ s:class, s:enum, s:binding ] = dotnet#class()
+let [ s:class, s:enum, s:binding ] = dotnet#classes()

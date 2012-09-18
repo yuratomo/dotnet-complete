@@ -1,43 +1,52 @@
 call dotnet#namespace('System.ComponentModel.Design')
 
 call dotnet#class('TypeDescriptionProviderService', 'Object', [ 
-  \ dotnet#method('TypeDescriptionProviderService(', ''),
+  \ dotnet#method('GetProvider(', 'object instance)', 'abstract'),
+  \ dotnet#method('GetProvider(', 'class Type type)', 'abstract'),
+  \ dotnet#method('TypeDescriptionProviderService(', ')', 'void'),
   \ ])
 
 call dotnet#class('ActiveDesignerEventArgs', 'EventArgs', [ 
-  \ dotnet#method('ActiveDesignerEventArgs(', ''),
-  \ dotnet#method('get_OldDesigner(', ''),
-  \ dotnet#method('get_NewDesigner(', ''),
+  \ dotnet#method('ActiveDesignerEventArgs(', 'class IDesignerHost oldDesigner, IDesignerHost newDesigner)', 'void'),
+  \ dotnet#method('get_OldDesigner(', ')', 'IDesignerHost'),
+  \ dotnet#method('get_NewDesigner(', ')', 'IDesignerHost'),
   \ dotnet#prop('OldDesigner', 'IDesignerHost'),
   \ dotnet#prop('NewDesigner', 'IDesignerHost'),
   \ ])
 
 call dotnet#class('ActiveDesignerEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('ActiveDesignerEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ActiveDesignerEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, ActiveDesignerEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, ActiveDesignerEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('CheckoutException', 'ExternalException', [ 
-  \ dotnet#method('CheckoutException(', ''),
+  \ dotnet#method('CheckoutException(', ')', 'void'),
+  \ dotnet#method('CheckoutException(', 'string message)', 'void'),
+  \ dotnet#method('CheckoutException(', 'string message, int32 errorCode)', 'void'),
+  \ dotnet#method('CheckoutException(', 'class SerializationInfo info, StreamingContext context)', 'void'),
+  \ dotnet#method('CheckoutException(', 'string message, Exception innerException)', 'void'),
+  \ dotnet#method('CheckoutException(', ')', 'static void .'),
   \ ])
 
 call dotnet#class('CommandID', 'Object', [ 
-  \ dotnet#method('CommandID(', ''),
-  \ dotnet#method('get_ID(', ''),
-  \ dotnet#method('Equals(', ''),
-  \ dotnet#method('GetHashCode(', ''),
-  \ dotnet#method('ToString(', ''),
+  \ dotnet#method('CommandID(', 'Guid menuGroup, int32 commandID)', 'void'),
+  \ dotnet#method('get_ID(', ')', 'int32'),
+  \ dotnet#method('Equals(', 'object obj)', 'bool'),
+  \ dotnet#method('GetHashCode(', ')', 'int32'),
+  \ dotnet#method('get_Guid(', ')', ''),
+  \ dotnet#method('ToString(', ')', 'string'),
   \ dotnet#prop('ID', 'int32'),
   \ dotnet#prop('Guid', 'Guid'),
   \ ])
 
 call dotnet#class('ComponentChangedEventArgs', 'EventArgs', [ 
-  \ dotnet#method('get_Component(', ''),
-  \ dotnet#method('get_Member(', ''),
-  \ dotnet#method('get_NewValue(', ''),
-  \ dotnet#method('get_OldValue(', ''),
-  \ dotnet#method('ComponentChangedEventArgs(', ''),
+  \ dotnet#method('get_Component(', ')', 'object'),
+  \ dotnet#method('get_Member(', ')', 'MemberDescriptor'),
+  \ dotnet#method('get_NewValue(', ')', 'object'),
+  \ dotnet#method('get_OldValue(', ')', 'object'),
+  \ dotnet#method('ComponentChangedEventArgs(', 'object component, MemberDescriptor member, object oldValue, object newValue)', 'void'),
   \ dotnet#prop('Component', 'object'),
   \ dotnet#prop('Member', 'MemberDescriptor'),
   \ dotnet#prop('NewValue', 'object'),
@@ -45,70 +54,81 @@ call dotnet#class('ComponentChangedEventArgs', 'EventArgs', [
   \ ])
 
 call dotnet#class('ComponentChangedEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('ComponentChangedEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ComponentChangedEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, ComponentChangedEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, ComponentChangedEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('ComponentChangingEventArgs', 'EventArgs', [ 
-  \ dotnet#method('get_Component(', ''),
-  \ dotnet#method('get_Member(', ''),
-  \ dotnet#method('ComponentChangingEventArgs(', ''),
+  \ dotnet#method('get_Component(', ')', 'object'),
+  \ dotnet#method('get_Member(', ')', 'MemberDescriptor'),
+  \ dotnet#method('ComponentChangingEventArgs(', 'object component, MemberDescriptor member)', 'void'),
   \ dotnet#prop('Component', 'object'),
   \ dotnet#prop('Member', 'MemberDescriptor'),
   \ ])
 
 call dotnet#class('ComponentChangingEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('ComponentChangingEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ComponentChangingEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, ComponentChangingEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, ComponentChangingEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('ComponentEventArgs', 'EventArgs', [ 
-  \ dotnet#method('ComponentEventArgs(', ''),
+  \ dotnet#method('get_Component(', ')', ''),
+  \ dotnet#method('ComponentEventArgs(', 'class IComponent component)', 'void'),
   \ dotnet#prop('Component', 'IComponent'),
   \ ])
 
 call dotnet#class('ComponentEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('ComponentEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ComponentEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, ComponentEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, ComponentEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('ComponentRenameEventArgs', 'EventArgs', [ 
-  \ dotnet#method('get_Component(', ''),
-  \ dotnet#method('get_OldName(', ''),
-  \ dotnet#method('get_NewName(', ''),
-  \ dotnet#method('ComponentRenameEventArgs(', ''),
+  \ dotnet#method('get_Component(', ')', 'object'),
+  \ dotnet#method('get_OldName(', ')', 'string'),
+  \ dotnet#method('get_NewName(', ')', 'string'),
+  \ dotnet#method('ComponentRenameEventArgs(', 'object component, string oldName, string newName)', 'void'),
   \ dotnet#prop('Component', 'object'),
   \ dotnet#prop('OldName', 'string'),
   \ dotnet#prop('NewName', 'string'),
   \ ])
 
 call dotnet#class('ComponentRenameEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('ComponentRenameEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ComponentRenameEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, ComponentRenameEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, ComponentRenameEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('DesignerOptionService', 'Object', [ 
-  \ dotnet#method('get_Count(', ''),
-  \ dotnet#method('get_Name(', ''),
-  \ dotnet#method('CopyTo(', ''),
-  \ dotnet#method('IndexOf(', ''),
-  \ dotnet#method('ShowDialog(', ''),
-  \ dotnet#method('get_IsSynchronized(', ''),
-  \ dotnet#method('get_SyncRoot(', ''),
-  \ dotnet#method('get_IsFixedSize(', ''),
-  \ dotnet#method('get_IsReadOnly(', ''),
-  \ dotnet#method('get_Item(', ''),
-  \ dotnet#method('set_Item(', ''),
-  \ dotnet#method('Add(', ''),
-  \ dotnet#method('Clear(', ''),
-  \ dotnet#method('Contains(', ''),
-  \ dotnet#method('Insert(', ''),
-  \ dotnet#method('Remove(', ''),
-  \ dotnet#method('RemoveAt(', ''),
+  \ dotnet#method('get_Count(', ')', 'int32'),
+  \ dotnet#method('get_Name(', ')', 'string'),
+  \ dotnet#method('get_Parent(', ')', ''),
+  \ dotnet#method('get_Properties(', ')', ''),
+  \ dotnet#method('get_Item(', 'int32 index)', ''),
+  \ dotnet#method('get_Item(', 'string name)', ''),
+  \ dotnet#method('CopyTo(', 'class Array array, int32 index)', 'void'),
+  \ dotnet#method('GetEnumerator(', ')', ''),
+  \ dotnet#method('IndexOf(', 'class DesignerOptionService/DesignerOptionCollection value)', 'int32'),
+  \ dotnet#method('ShowDialog(', ')', 'bool'),
+  \ dotnet#method('get_IsSynchronized(', ')', 'bool '),
+  \ dotnet#method('get_SyncRoot(', ')', 'object '),
+  \ dotnet#method('get_IsFixedSize(', ')', 'bool '),
+  \ dotnet#method('get_IsReadOnly(', ')', 'bool '),
+  \ dotnet#method('get_Item(', 'int32 index)', 'object '),
+  \ dotnet#method('set_Item(', 'int32 index, object value)', 'void '),
+  \ dotnet#method('Add(', 'object value)', 'int32 '),
+  \ dotnet#method('Clear(', ')', 'void '),
+  \ dotnet#method('Contains(', 'object value)', 'bool '),
+  \ dotnet#method('IndexOf(', 'object value)', 'int32 '),
+  \ dotnet#method('Insert(', 'int32 index, object value)', 'void '),
+  \ dotnet#method('Remove(', 'object value)', 'void '),
+  \ dotnet#method('RemoveAt(', 'int32 index)', 'void '),
   \ dotnet#prop('Count', 'int32'),
   \ dotnet#prop('Name', 'string'),
   \ dotnet#prop('Parent', 'DesignerOptionService/DesignerOptionCollection'),
@@ -120,64 +140,73 @@ call dotnet#class('DesignerOptionService', 'Object', [
   \ dotnet#prop('IsFixedSize', 'bool'),
   \ dotnet#prop('IsReadOnly', 'bool'),
   \ dotnet#prop('Item(int32)', 'object'),
-  \ dotnet#method('GetPropertiesSupported(', ''),
-  \ dotnet#method('GetProperties(', ''),
-  \ dotnet#method('ConvertTo(', ''),
-  \ dotnet#method('DesignerOptionService(', ''),
-  \ dotnet#method('get_Options(', ''),
-  \ dotnet#method('CreateOptionCollection(', ''),
-  \ dotnet#method('PopulateOptionCollection(', ''),
-  \ dotnet#method('GetOptionValue(', ''),
-  \ dotnet#method('SetOptionValue(', ''),
+  \ dotnet#method('GetPropertiesSupported(', 'class ITypeDescriptorContext cxt)', 'bool'),
+  \ dotnet#method('GetProperties(', 'class ITypeDescriptorContext cxt, object value, Attribute[] attributes)', 'PropertyDescriptorCollection'),
+  \ dotnet#method('ConvertTo(', 'class ITypeDescriptorContext cxt, CultureInfo culture, object value, Type destinationType)', 'object'),
+  \ dotnet#method('DesignerOptionService(', ')', 'void'),
+  \ dotnet#method('get_Options(', ')', 'DesignerOptionService/DesignerOptionCollection'),
+  \ dotnet#method('CreateOptionCollection(', 'class DesignerOptionService/DesignerOptionCollection parent, string name, object value)', 'DesignerOptionService/DesignerOptionCollection'),
+  \ dotnet#method('PopulateOptionCollection(', 'class DesignerOptionService/DesignerOptionCollection options)', 'void'),
+  \ dotnet#method('ShowDialog(', 'class DesignerOptionService/DesignerOptionCollection options, object optionObject)', 'bool'),
+  \ dotnet#method('GetOptionValue(', 'string pageName, string valueName)', 'object '),
+  \ dotnet#method('SetOptionValue(', 'string pageName, string valueName, object value)', 'void '),
+  \ dotnet#method('DesignerOptionService(', ')', 'void'),
   \ dotnet#prop('Options', 'DesignerOptionService/DesignerOptionCollection'),
   \ ])
 
 call dotnet#class('DesignerTransaction', 'Object', [ 
-  \ dotnet#method('DesignerTransaction(', ''),
-  \ dotnet#method('get_Canceled(', ''),
-  \ dotnet#method('get_Committed(', ''),
-  \ dotnet#method('get_Description(', ''),
-  \ dotnet#method('Cancel(', ''),
-  \ dotnet#method('Commit(', ''),
-  \ dotnet#method('OnCancel(', ''),
-  \ dotnet#method('OnCommit(', ''),
-  \ dotnet#method('Finalize(', ''),
-  \ dotnet#method('Dispose(', ''),
+  \ dotnet#method('DesignerTransaction(', ')', 'void'),
+  \ dotnet#method('DesignerTransaction(', 'string description)', 'void'),
+  \ dotnet#method('get_Canceled(', ')', 'bool'),
+  \ dotnet#method('get_Committed(', ')', 'bool'),
+  \ dotnet#method('get_Description(', ')', 'string'),
+  \ dotnet#method('Cancel(', ')', 'void'),
+  \ dotnet#method('Commit(', ')', 'void'),
+  \ dotnet#method('OnCancel(', ')', 'abstract void'),
+  \ dotnet#method('OnCommit(', ')', 'abstract void'),
+  \ dotnet#method('Finalize(', ')', 'void'),
+  \ dotnet#method('Dispose(', ')', 'void '),
+  \ dotnet#method('Dispose(', 'bool disposing)', 'void'),
   \ dotnet#prop('Canceled', 'bool'),
   \ dotnet#prop('Committed', 'bool'),
   \ dotnet#prop('Description', 'string'),
   \ ])
 
 call dotnet#class('DesignerTransactionCloseEventArgs', 'EventArgs', [ 
-  \ dotnet#method('DesignerTransactionCloseEventArgs(', ''),
-  \ dotnet#method('get_TransactionCommitted(', ''),
-  \ dotnet#method('get_LastTransaction(', ''),
+  \ dotnet#method('DesignerTransactionCloseEventArgs(', 'bool commit)', 'void'),
+  \ dotnet#method('DesignerTransactionCloseEventArgs(', 'bool commit, bool lastTransaction)', 'void'),
+  \ dotnet#method('get_TransactionCommitted(', ')', 'bool'),
+  \ dotnet#method('get_LastTransaction(', ')', 'bool'),
   \ dotnet#prop('TransactionCommitted', 'bool'),
   \ dotnet#prop('LastTransaction', 'bool'),
   \ ])
 
 call dotnet#class('DesignerTransactionCloseEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('DesignerTransactionCloseEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('DesignerTransactionCloseEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, DesignerTransactionCloseEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, DesignerTransactionCloseEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('MenuCommand', 'Object', [ 
-  \ dotnet#method('MenuCommand(', ''),
-  \ dotnet#method('get_Checked(', ''),
-  \ dotnet#method('set_Checked(', ''),
-  \ dotnet#method('get_Enabled(', ''),
-  \ dotnet#method('set_Enabled(', ''),
-  \ dotnet#method('get_Supported(', ''),
-  \ dotnet#method('set_Supported(', ''),
-  \ dotnet#method('get_Visible(', ''),
-  \ dotnet#method('set_Visible(', ''),
-  \ dotnet#method('add_CommandChanged(', ''),
-  \ dotnet#method('remove_CommandChanged(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('get_OleStatus(', ''),
-  \ dotnet#method('OnCommandChanged(', ''),
-  \ dotnet#method('ToString(', ''),
+  \ dotnet#method('MenuCommand(', 'class EventHandler handler, CommandID command)', 'void'),
+  \ dotnet#method('get_Checked(', ')', 'bool'),
+  \ dotnet#method('set_Checked(', 'bool value)', 'void'),
+  \ dotnet#method('get_Enabled(', ')', 'bool'),
+  \ dotnet#method('set_Enabled(', 'bool value)', 'void'),
+  \ dotnet#method('get_Properties(', ')', ''),
+  \ dotnet#method('get_Supported(', ')', 'bool'),
+  \ dotnet#method('set_Supported(', 'bool value)', 'void'),
+  \ dotnet#method('get_Visible(', ')', 'bool'),
+  \ dotnet#method('set_Visible(', 'bool value)', 'void'),
+  \ dotnet#method('add_CommandChanged(', 'class EventHandler value)', 'void'),
+  \ dotnet#method('remove_CommandChanged(', 'class EventHandler value)', 'void'),
+  \ dotnet#method('get_CommandID(', ')', ''),
+  \ dotnet#method('Invoke(', ')', 'void'),
+  \ dotnet#method('Invoke(', 'object arg)', 'void'),
+  \ dotnet#method('get_OleStatus(', ')', 'int32'),
+  \ dotnet#method('OnCommandChanged(', 'class EventArgs e)', 'void'),
+  \ dotnet#method('ToString(', ')', 'string'),
   \ dotnet#event('CommandChanged', 'EventHandler'),
   \ dotnet#prop('Checked', 'bool'),
   \ dotnet#prop('Enabled', 'bool'),
@@ -189,53 +218,61 @@ call dotnet#class('MenuCommand', 'Object', [
   \ ])
 
 call dotnet#class('DesignerVerb', 'MenuCommand', [ 
-  \ dotnet#method('DesignerVerb(', ''),
-  \ dotnet#method('get_Description(', ''),
-  \ dotnet#method('set_Description(', ''),
-  \ dotnet#method('get_Text(', ''),
-  \ dotnet#method('ToString(', ''),
+  \ dotnet#method('DesignerVerb(', 'string text, EventHandler handler)', 'void'),
+  \ dotnet#method('DesignerVerb(', 'string text, EventHandler handler, CommandID startCommandID)', 'void'),
+  \ dotnet#method('get_Description(', ')', 'string'),
+  \ dotnet#method('set_Description(', 'string value)', 'void'),
+  \ dotnet#method('get_Text(', ')', 'string'),
+  \ dotnet#method('ToString(', ')', 'string'),
   \ dotnet#prop('Description', 'string'),
   \ dotnet#prop('Text', 'string'),
   \ ])
 
 call dotnet#class('DesignerVerbCollection', 'CollectionBase', [ 
-  \ dotnet#method('DesignerVerbCollection(', ''),
-  \ dotnet#method('get_Item(', ''),
-  \ dotnet#method('set_Item(', ''),
-  \ dotnet#method('Add(', ''),
-  \ dotnet#method('AddRange(', ''),
-  \ dotnet#method('Insert(', ''),
-  \ dotnet#method('IndexOf(', ''),
-  \ dotnet#method('Contains(', ''),
-  \ dotnet#method('Remove(', ''),
-  \ dotnet#method('CopyTo(', ''),
-  \ dotnet#method('OnSet(', ''),
-  \ dotnet#method('OnInsert(', ''),
-  \ dotnet#method('OnClear(', ''),
-  \ dotnet#method('OnRemove(', ''),
-  \ dotnet#method('OnValidate(', ''),
+  \ dotnet#method('DesignerVerbCollection(', ')', 'void'),
+  \ dotnet#method('DesignerVerbCollection(', 'class DesignerVerb[] value)', 'void'),
+  \ dotnet#method('get_Item(', 'int32 index)', 'DesignerVerb'),
+  \ dotnet#method('set_Item(', 'int32 index, DesignerVerb value)', 'void'),
+  \ dotnet#method('Add(', 'class DesignerVerb value)', 'int32'),
+  \ dotnet#method('AddRange(', 'class DesignerVerb[] value)', 'void'),
+  \ dotnet#method('AddRange(', 'class DesignerVerbCollection value)', 'void'),
+  \ dotnet#method('Insert(', 'int32 index, DesignerVerb value)', 'void'),
+  \ dotnet#method('IndexOf(', 'class DesignerVerb value)', 'int32'),
+  \ dotnet#method('Contains(', 'class DesignerVerb value)', 'bool'),
+  \ dotnet#method('Remove(', 'class DesignerVerb value)', 'void'),
+  \ dotnet#method('CopyTo(', 'class DesignerVerb[] array, int32 index)', 'void'),
+  \ dotnet#method('OnSet(', 'int32 index, object oldValue, object newValue)', 'void'),
+  \ dotnet#method('OnInsert(', 'int32 index, object value)', 'void'),
+  \ dotnet#method('OnClear(', ')', 'void'),
+  \ dotnet#method('OnRemove(', 'int32 index, object value)', 'void'),
+  \ dotnet#method('OnValidate(', 'object value)', 'void'),
   \ dotnet#prop('Item(int32)', 'DesignerVerb'),
   \ ])
 
 call dotnet#class('DesigntimeLicenseContext', 'LicenseContext', [ 
-  \ dotnet#method('GetSavedLicenseKey(', ''),
-  \ dotnet#method('SetSavedLicenseKey(', ''),
-  \ dotnet#method('DesigntimeLicenseContext(', ''),
+  \ dotnet#method('get_UsageMode(', ')', ''),
+  \ dotnet#method('GetSavedLicenseKey(', 'class Type type, Assembly resourceAssembly)', 'string'),
+  \ dotnet#method('SetSavedLicenseKey(', 'class Type type, string key)', 'void'),
+  \ dotnet#method('DesigntimeLicenseContext(', ')', 'void'),
   \ dotnet#prop('UsageMode', 'LicenseUsageMode'),
   \ ])
 
 call dotnet#class('DesigntimeLicenseContextSerializer', 'Object', [ 
-  \ dotnet#method('Serialize(', ''),
-  \ dotnet#method('DesigntimeLicenseContextSerializer(', ''),
+  \ dotnet#method('Serialize(', 'class Stream o, string cryptoKey, DesigntimeLicenseContext context)', 'static void'),
+  \ dotnet#method('DesigntimeLicenseContextSerializer(', ')', 'void'),
   \ ])
 
 call dotnet#class('DesignerCollection', 'Object', [ 
-  \ dotnet#method('DesignerCollection(', ''),
-  \ dotnet#method('get_Count(', ''),
-  \ dotnet#method('GetEnumerator(', ''),
-  \ dotnet#method('get_IsSynchronized(', ''),
-  \ dotnet#method('get_SyncRoot(', ''),
-  \ dotnet#method('CopyTo(', ''),
+  \ dotnet#method('DesignerCollection(', 'class IDesignerHost[] designers)', 'void'),
+  \ dotnet#method('DesignerCollection(', 'class IList designers)', 'void'),
+  \ dotnet#method('get_Count(', ')', 'int32'),
+  \ dotnet#method('get_Item(', 'int32 index)', ''),
+  \ dotnet#method('GetEnumerator(', ')', 'IEnumerator'),
+  \ dotnet#method('get_Count(', ')', 'int32 '),
+  \ dotnet#method('get_IsSynchronized(', ')', 'bool '),
+  \ dotnet#method('get_SyncRoot(', ')', 'object '),
+  \ dotnet#method('CopyTo(', 'class Array array, int32 index)', 'void '),
+  \ dotnet#method('GetEnumerator(', ')', ''),
   \ dotnet#prop('Count', 'int32'),
   \ dotnet#prop('Item(int32)', 'IDesignerHost'),
   \ dotnet#prop('Count', 'int32'),
@@ -244,46 +281,61 @@ call dotnet#class('DesignerCollection', 'Object', [
   \ ])
 
 call dotnet#class('DesignerEventArgs', 'EventArgs', [ 
-  \ dotnet#method('DesignerEventArgs(', ''),
-  \ dotnet#method('get_Designer(', ''),
+  \ dotnet#method('DesignerEventArgs(', 'class IDesignerHost host)', 'void'),
+  \ dotnet#method('get_Designer(', ')', 'IDesignerHost'),
   \ dotnet#prop('Designer', 'IDesignerHost'),
   \ ])
 
 call dotnet#class('DesignerEventHandler', 'MulticastDelegate', [ 
-  \ dotnet#method('DesignerEventHandler(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('DesignerEventHandler(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'object sender, DesignerEventArgs e)', 'void'),
+  \ dotnet#method('BeginInvoke(', 'object sender, DesignerEventArgs e, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'void'),
   \ ])
 
 call dotnet#class('HelpKeywordAttribute', 'Attribute', [ 
-  \ dotnet#method('HelpKeywordAttribute(', ''),
-  \ dotnet#method('get_HelpKeyword(', ''),
-  \ dotnet#method('Equals(', ''),
-  \ dotnet#method('GetHashCode(', ''),
-  \ dotnet#method('IsDefaultAttribute(', ''),
+  \ dotnet#method('HelpKeywordAttribute(', ')', 'void'),
+  \ dotnet#method('HelpKeywordAttribute(', 'string keyword)', 'void'),
+  \ dotnet#method('HelpKeywordAttribute(', 'class Type t)', 'void'),
+  \ dotnet#method('get_HelpKeyword(', ')', 'string'),
+  \ dotnet#method('Equals(', 'object obj)', 'bool'),
+  \ dotnet#method('GetHashCode(', ')', 'int32'),
+  \ dotnet#method('IsDefaultAttribute(', ')', 'bool'),
+  \ dotnet#method('HelpKeywordAttribute(', ')', 'static void .'),
   \ dotnet#prop('HelpKeyword', 'string'),
   \ ])
 
 call dotnet#class('ServiceCreatorCallback', 'MulticastDelegate', [ 
-  \ dotnet#method('ServiceCreatorCallback(', ''),
-  \ dotnet#method('Invoke(', ''),
-  \ dotnet#method('EndInvoke(', ''),
+  \ dotnet#method('ServiceCreatorCallback(', 'object object, int method)', 'void'),
+  \ dotnet#method('Invoke(', 'class IServiceContainer container, Type serviceType)', 'object'),
+  \ dotnet#method('BeginInvoke(', 'class IServiceContainer container, Type serviceType, AsyncCallback callback, object object)', ''),
+  \ dotnet#method('EndInvoke(', 'class IAsyncResult result)', 'object'),
   \ ])
 
 call dotnet#class('ServiceContainer', 'Object', [ 
-  \ dotnet#method('ServiceContainer(', ''),
-  \ dotnet#method('AddService(', ''),
-  \ dotnet#method('Dispose(', ''),
-  \ dotnet#method('GetService(', ''),
-  \ dotnet#method('RemoveService(', ''),
+  \ dotnet#method('ServiceContainer(', ')', 'void'),
+  \ dotnet#method('ServiceContainer(', 'class IServiceProvider parentProvider)', 'void'),
+  \ dotnet#method('get_DefaultServices(', ')', 'family'),
+  \ dotnet#method('AddService(', 'class Type serviceType, object serviceInstance)', 'void'),
+  \ dotnet#method('AddService(', 'class Type serviceType, object serviceInstance, bool promote)', 'void'),
+  \ dotnet#method('AddService(', 'class Type serviceType, ServiceCreatorCallback callback)', 'void'),
+  \ dotnet#method('AddService(', 'class Type serviceType, ServiceCreatorCallback callback, bool promote)', 'void'),
+  \ dotnet#method('Dispose(', ')', 'void'),
+  \ dotnet#method('Dispose(', 'bool disposing)', 'void'),
+  \ dotnet#method('GetService(', 'class Type serviceType)', 'object'),
+  \ dotnet#method('RemoveService(', 'class Type serviceType)', 'void'),
+  \ dotnet#method('RemoveService(', 'class Type serviceType, bool promote)', 'void'),
+  \ dotnet#method('ServiceContainer(', ')', 'static void .'),
   \ dotnet#prop('DefaultServices', 'Type[]'),
   \ ])
 
 call dotnet#class('StandardCommands', 'Object', [ 
-  \ dotnet#method('StandardCommands(', ''),
+  \ dotnet#method('StandardCommands(', ')', 'void'),
+  \ dotnet#method('StandardCommands(', ')', 'static void .'),
   \ ])
 
 call dotnet#class('StandardToolWindows', 'Object', [ 
-  \ dotnet#method('StandardToolWindows(', ''),
+  \ dotnet#method('StandardToolWindows(', ')', 'void'),
+  \ dotnet#method('StandardToolWindows(', ')', 'static void .'),
   \ ])
 

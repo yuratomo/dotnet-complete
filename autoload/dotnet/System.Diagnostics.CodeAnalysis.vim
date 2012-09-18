@@ -1,17 +1,17 @@
 call dotnet#namespace('System.Diagnostics.CodeAnalysis')
 
 call dotnet#class('SuppressMessageAttribute', 'Attribute', [ 
-  \ dotnet#method('SuppressMessageAttribute(', ''),
-  \ dotnet#method('get_Category(', ''),
-  \ dotnet#method('get_CheckId(', ''),
-  \ dotnet#method('get_Scope(', ''),
-  \ dotnet#method('set_Scope(', ''),
-  \ dotnet#method('get_Target(', ''),
-  \ dotnet#method('set_Target(', ''),
-  \ dotnet#method('get_MessageId(', ''),
-  \ dotnet#method('set_MessageId(', ''),
-  \ dotnet#method('get_Justification(', ''),
-  \ dotnet#method('set_Justification(', ''),
+  \ dotnet#method('SuppressMessageAttribute(', 'string category, string checkId)', 'void'),
+  \ dotnet#method('get_Category(', ')', 'string'),
+  \ dotnet#method('get_CheckId(', ')', 'string'),
+  \ dotnet#method('get_Scope(', ')', 'string'),
+  \ dotnet#method('set_Scope(', 'string value)', 'void'),
+  \ dotnet#method('get_Target(', ')', 'string'),
+  \ dotnet#method('set_Target(', 'string value)', 'void'),
+  \ dotnet#method('get_MessageId(', ')', 'string'),
+  \ dotnet#method('set_MessageId(', 'string value)', 'void'),
+  \ dotnet#method('get_Justification(', ')', 'string'),
+  \ dotnet#method('set_Justification(', 'string value)', 'void'),
   \ dotnet#prop('Category', 'string'),
   \ dotnet#prop('CheckId', 'string'),
   \ dotnet#prop('Scope', 'string'),
@@ -21,6 +21,6 @@ call dotnet#class('SuppressMessageAttribute', 'Attribute', [
   \ ])
 
 call dotnet#class('ExcludeFromCodeCoverageAttribute', 'Attribute', [ 
-  \ dotnet#method('ExcludeFromCodeCoverageAttribute(', ''),
+  \ dotnet#method('ExcludeFromCodeCoverageAttribute(', ')', 'void'),
   \ ])
 
