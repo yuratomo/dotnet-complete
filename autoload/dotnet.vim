@@ -172,6 +172,7 @@ function! dotnet#bind(name, members)
     \ 'kind'   : 't',
     \ 'members': a:members,
     \ 'class'  : 'Binding',
+    \ 'detail' : '',
     \ }
 endfunction
 

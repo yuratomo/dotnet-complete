@@ -1,3 +1,6 @@
+if exists('g:loaded_xaml') && g:loaded_xaml == 1
+  finish
+endif
 
 let [ s:MODE_TAG , s:MODE_ATTR, s:MODE_VALUE, s:MODE_BINDING ] = range(4)
 let [ s:TAG_KIND_NORMAL, s:TAG_KIND_BRACE ] = range(2)
@@ -214,7 +217,7 @@ function! s:binding_completion(base, res)
       call add(a:res, dotnet#member_to_compitem(key, item))
     endif
   endfor
-  return xaml#prop('', '')
+  return dotnet#prop('', '')
 endfunction
 
 function! s:find_member_type(src, tag, prop)
@@ -233,7 +236,7 @@ function! s:find_member_type(src, tag, prop)
   if item.extend != ''
     return s:find_member_type(a:src, item.extend, a:prop)
   endif
-  return xaml#prop('', '')
+  return dotnet#prop('', '')
 endfunction
 
 function! s:names()
@@ -255,9 +258,10 @@ function! s:names()
     endif
     let start = stridx(line, '"', start+1)
     let end   = stridx(line, '"', start+1)
-    call add(names, xaml#prop(line[ start+1 : end-1 ], class))
+    call add(names, dotnet#prop(line[ start+1 : end-1 ], class))
   endfor
   return names
 endfun
 
 let [ s:class, s:enum, s:binding ] = dotnet#classes()
+let g:loaded_xaml = 1
