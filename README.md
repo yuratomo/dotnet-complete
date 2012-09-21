@@ -82,7 +82,7 @@ ScreenShots
 
 * Class balloon help
 
-![Class balloon help](http://yuratomo.up.seesaa.net/image/dotnet14.PNG "Class balloon help")
+![Class balloon help](http://yuratomo.up.seesaa.net/image/dotnet15.PNG "Class balloon help")
 
 * member balloon help
 
