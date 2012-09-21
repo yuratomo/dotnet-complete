@@ -64,29 +64,29 @@ ScreenShots
 
 ![Namespace](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal9.PNG "Namespace")
 
-![Namespac2](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail10.PNG "Namespace")
+![Namespac2](http://yuratomo.up.seesaa.net/image/dotnet10.PNG "Namespace")
 
 * Class name
 
-![Class name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail11.PNG "Class Name")
+![Class name](http://yuratomo.up.seesaa.net/image/dotnet11.PNG "Class Name")
 
 * Class member
 
-![Class member](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail12.PNG "Class member")
+![Class member](http://yuratomo.up.seesaa.net/image/dotnet12.PNG "Class member")
 
-![Class member2](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail13.PNG "Class member2")
+![Class member2](http://yuratomo.up.seesaa.net/image/dotnet13.PNG "Class member2")
 
 * New class
 
-![New class](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail14.PNG "New class")
+![New class](http://yuratomo.up.seesaa.net/image/dotnet14.PNG "New class")
 
 * Class balloon help
 
-![Class balloon help](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail14.PNG "Class balloon help")
+![Class balloon help](http://yuratomo.up.seesaa.net/image/dotnet14.PNG "Class balloon help")
 
 * member balloon help
 
-![member balloon help](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail16.PNG "member balloon help")
+![member balloon help](http://yuratomo.up.seesaa.net/image/dotnet16.PNG "member balloon help")
 
 
 
