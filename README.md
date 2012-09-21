@@ -25,68 +25,68 @@ ScreenShots
 
 * Tag name (Class name)
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal1.PNG
+![Tag name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal1.PNG "Tag name")
 
 * Tag attribute name
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal2.PNG
+![Tag attribute name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal2.PNG "Tag attribute name")
 
 * Value (Enum and value)
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal3.PNG
+![Value](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal3.PNG "Value")
 
 * Tag Property name (Property and event)
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal4.PNG
+![Tag Property name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal4.PNG, "Tag property name")
 
 * Binding (Binding class)
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal5.PNG
+![Binding](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal5.PNG "Binding")
 
 * Binding Property
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal6.PNG
+![BInding Property](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal6.PNG "Binding Property")
 
 
 * Binding Name
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal7.PNG
+![Binding Name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal7.PNG "Binding Name")
 
 
 * xaml namespace
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal8.PNG
+![xaml namespace](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal8.PNG "xaml namespace")
 
 
 ### CS ###
 
 * Namespace (Using ...)
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal9.PNG
+![Namespace](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal9.PNG "Namespace")
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail10.PNG
+![Namespac2](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail10.PNG "Namespace")
 
 * Class name
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail11.PNG
+![Class name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail11.PNG "Class Name")
 
 * Class member
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail12.PNG
+![Class member](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail12.PNG "Class member")
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail13.PNG
+![Class member2](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail13.PNG "Class member2")
 
 * New class
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail14.PNG
+![New class](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail14.PNG "New class")
 
 * Class balloon help
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail15.PNG
+![Class balloon help](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail14.PNG "Class balloon help")
 
 * member balloon help
 
-http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail16.PNG
+![member balloon help](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnail16.PNG "member balloon help")
 
 
 
