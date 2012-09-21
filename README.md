@@ -1,15 +1,18 @@
 = dotnet-complete =
 This plugin is a completion for .Net Source.
 
- - WPF (xaml)
+ - WPF (*.xaml)
 
- - c# (cs)
+ - c# (*.cs)
 
 == Settings ==
-    
-    au BufNewFile,BufRead *.xaml    setf xml
-    
-    au BufNewFile,BufRead *.xaml    setl omnifunc=xaml#complete
-    
-    au BufNewFile,BufRead *.cs      setl omnifunc=cs#complete
+* for xaml
 
+    au BufNewFile,BufRead *.xaml    setf xml
+    au BufNewFile,BufRead *.xaml    setl omnifunc=xaml#complete
+
+* for c#
+
+    au BufNewFile,BufRead *.cs      setl omnifunc=cs#complete
+    au BufNewFile,BufRead *.cs      setl bexpr=cs#baloon()
+    au BufNewFile,BufRead *.cs      setl ballooneval

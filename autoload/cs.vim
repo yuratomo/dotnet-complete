@@ -1,4 +1,4 @@
-let [ s:MODE_NAMESPACE, s:MODE_CLASS , s:MODE_MEMBER, s:MODE_ENUM, s:MODE_NEW_CLASS ] = range(5)
+let [ s:MODE_NAMESPACE, s:MODE_CLASS, s:MODE_MEMBER, s:MODE_ENUM, s:MODE_NEW_CLASS ] = range(5)
 let s:complete_mode = s:MODE_CLASS
 
 let s:type = ''
@@ -27,8 +27,8 @@ function! s:analize(line, cur)
   let cur = a:cur
   let compmode = s:MODE_CLASS
 
-  " import?
-  if line[0:10] =~ '\<import\>\s'
+  " namespace?
+  if line[0:10] =~ '\<using\>\s'
     let pstart = matchend(line, '\<import\>\s\+')
     return [ pstart, s:MODE_NAMESPACE, '', [] ]
   endif
@@ -176,7 +176,7 @@ function! s:class_member_completion(base, res)
 endfunction
 
 function! s:normalize_type(type)
-  return substitute(a:type, '<.*>', '', '')
+  return substitute(substitute(a:type, '<.*>', '', ''), '\[.*\]', '', '')
 endfunction
 
 function! s:find_type(start_line, var)
@@ -185,6 +185,7 @@ function! s:find_type(start_line, var)
   while l <= a:start_line
     let line = getline(l)
     let line = substitute(line, '<.\{-\}>','','g')
+    let line = substitute(line, '\[.\{-\}\]','','g')
     if line =~ '\w\+[ \t]\+\<' . a:var . '\>.*'
       let parts = split(line, '[. \t;=]\+')
       let pre = ''
