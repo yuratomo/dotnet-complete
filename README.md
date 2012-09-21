@@ -25,44 +25,44 @@ ScreenShots
 
 * Tag name (Class name)
 
-![Tag name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal1.PNG "Tag name")
+![Tag name](http://yuratomo.up.seesaa.net/image/dotnet1.PNG "Tag name")
 
 * Tag attribute name
 
-![Tag attribute name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal2.PNG "Tag attribute name")
+![Tag attribute name](http://yuratomo.up.seesaa.net/image/dotnet2.PNG "Tag attribute name")
 
 * Value (Enum and value)
 
-![Value](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal3.PNG "Value")
+![Value](http://yuratomo.up.seesaa.net/image/dotnet3.PNG "Value")
 
 * Tag Property name (Property and event)
 
-![Tag Property name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal4.PNG, "Tag property name")
+![Tag Property name](http://yuratomo.up.seesaa.net/image/dotnet4.PNG, "Tag property name")
 
 * Binding (Binding class)
 
-![Binding](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal5.PNG "Binding")
+![Binding](http://yuratomo.up.seesaa.net/image/dotnet5.PNG "Binding")
 
 * Binding Property
 
-![BInding Property](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal6.PNG "Binding Property")
+![BInding Property](http://yuratomo.up.seesaa.net/image/dotnet6.PNG "Binding Property")
 
 
 * Binding Name
 
-![Binding Name](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal7.PNG "Binding Name")
+![Binding Name](http://yuratomo.up.seesaa.net/image/dotnet7.PNG "Binding Name")
 
 
 * xaml namespace
 
-![xaml namespace](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal8.PNG "xaml namespace")
+![xaml namespace](http://yuratomo.up.seesaa.net/image/dotnet8.PNG "xaml namespace")
 
 
 ### CS ###
 
 * Namespace (Using ...)
 
-![Namespace](http://yuratomo.up.seesaa.net/image/dotnet14-thumbnal9.PNG "Namespace")
+![Namespace](http://yuratomo.up.seesaa.net/image/dotnet9.PNG "Namespace")
 
 ![Namespac2](http://yuratomo.up.seesaa.net/image/dotnet10.PNG "Namespace")
 
