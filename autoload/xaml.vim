@@ -1,10 +1,6 @@
-if exists('g:loaded_xaml') && g:loaded_xaml == 1
-  finish
-endif
-
 let [ s:MODE_TAG , s:MODE_ATTR, s:MODE_VALUE, s:MODE_BINDING ] = range(4)
 let [ s:TAG_KIND_NORMAL, s:TAG_KIND_BRACE ] = range(2)
-let s:xaml_complete_mode = s:MODE_TAG
+let s:complete_mode = s:MODE_TAG
 
 let s:namespace = ''
 let s:tag = ''
@@ -13,30 +9,31 @@ let s:property = ''
 
 function! xaml#complete(findstart, base)
   if a:findstart
-    " find start of word
     let line = getline('.')
     let start = col('.') - 1
-    while start > 0 && line[start - 1] !~ '[<> :.={ \t"]'
+
+    " find start of word
+    while start > 0 && line[start - 1] !~ '[<> :/.={ \t"]'
       let start -= 1
     endwhile
 
-    "resolve type
-    if line[start - 1] =~ '[<:]'
-      let s:xaml_complete_mode = s:MODE_TAG
+    " resolve complete mode [TAG/VALUE/BINDING/ATTR]
+    if line[start - 1] =~ '[<:/]'
+      let s:complete_mode = s:MODE_TAG
     elseif line[start - 1] =~ '["=]'
-      let s:xaml_complete_mode = s:MODE_VALUE
+      let s:complete_mode = s:MODE_VALUE
     elseif line[start - 1] == '{'
-      let s:xaml_complete_mode = s:MODE_BINDING
+      let s:complete_mode = s:MODE_BINDING
     elseif line[start - 1] == '>'
       return
     else
-      let s:xaml_complete_mode = s:MODE_ATTR
+      let s:complete_mode = s:MODE_ATTR
     endif
 
-    if start > 0 && s:xaml_complete_mode == s:MODE_ATTR 
+    if start > 0 && s:complete_mode == s:MODE_ATTR 
       " Resolve TagName for Attribute
       let s:tag = s:find_tag_name()
-    elseif start > 2 && s:xaml_complete_mode == s:MODE_VALUE
+    elseif start > 2 && s:complete_mode == s:MODE_VALUE
       let eq = strridx(line, '=', start-1)
       " start-1   --> "
       if eq != -1
@@ -66,22 +63,21 @@ function! xaml#complete(findstart, base)
 
   else
     let res = []
-    if s:xaml_complete_mode == s:MODE_TAG
+    if s:complete_mode == s:MODE_TAG
       call dotnet#class_completion(a:base, res)
 
-    elseif s:xaml_complete_mode == s:MODE_ATTR
+    elseif s:complete_mode == s:MODE_ATTR
       if s:tag_kind == s:TAG_KIND_NORMAL
-        if exists('s:tag')
-          call s:attr_completion(s:tag, a:base, res)
-        endif
+        call s:attr_completion(s:tag, a:base, res)
+
       elseif s:tag_kind == s:TAG_KIND_BRACE
         call s:bind_attr_completion(s:tag, a:base, res)
       endif
 
-    elseif s:xaml_complete_mode == s:MODE_VALUE
+    elseif s:complete_mode == s:MODE_VALUE
       call s:value_completion(s:tag, s:property, a:base, res)
 
-    elseif s:xaml_complete_mode == s:MODE_BINDING
+    elseif s:complete_mode == s:MODE_BINDING
       call s:binding_completion(a:base, res)
     endif
     return res
@@ -148,16 +144,17 @@ function! s:find_tag_name()
 endfunction
 
 function! s:attr_completion(tag, base, res)
-  if !exists('s:class[ a:tag ]')
+  if !dotnet#isClassExist(a:tag)
     return
   endif
 
-  let item = s:class[ a:tag ]
+  let item = dotnet#getClass(a:tag)
   for member in item.members
     if member.name =~ '^' . a:base && !dotnet#isMethod(member)
       call add(a:res, dotnet#member_to_compitem(item.name, member))
     endif
   endfor
+
   " find super class member
   if item.extend != ''
     call s:attr_completion(item.extend, a:base, a:res)
@@ -165,11 +162,11 @@ function! s:attr_completion(tag, base, res)
 endfunction
 
 function! s:bind_attr_completion(tag, base, res)
-  if !exists('s:binding[ a:tag ]')
+  if !dotnet#isBindingExist(a:tag)
     return
   endif
 
-  let item = s:binding[ a:tag ]
+  let item = dotnet#getBinding(a:tag)
   for member in item.members
     if member.name =~ '^' . a:base
       call add(a:res, dotnet#member_to_compitem(item.name, member))
@@ -191,8 +188,8 @@ function! s:value_completion(tag, prop, base, res)
     return
   endif
 
-  if exists('s:enum[mtype.class]')
-    let enum = s:enum[mtype.class]
+  if dotnet#isEnumExist(mtype.class)
+    let enum = dotnet#getEnum(mtype.class)
     for member in enum.members
       if member.name =~ '^' . a:base
         call add(a:res, dotnet#member_to_compitem(member.name, member))
@@ -213,7 +210,7 @@ endfunction
 function! s:binding_completion(base, res)
   for key in keys(s:binding)
     if key =~ a:base
-      let item = s:binding[ key ]
+      let item = dotnet#getBinding(key)
       call add(a:res, dotnet#member_to_compitem(key, item))
     endif
   endfor
@@ -264,4 +261,3 @@ function! s:names()
 endfun
 
 let [ s:class, s:enum, s:binding ] = dotnet#classes()
-let g:loaded_xaml = 1

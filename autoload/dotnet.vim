@@ -1,8 +1,16 @@
-let [ s:TYPE_ENUM , s:TYPE_EVENT, s:TYPE_METHOD, s:TYPE_PROP, s:TYPE_FIELD, s:TYPE_BINDING ] = range(6)
+let [ s:TYPE_NAMESPACE, s:TYPE_CLASS, s:TYPE_ENUM , s:TYPE_EVENT, s:TYPE_METHOD, s:TYPE_PROP, s:TYPE_FIELD, s:TYPE_BINDING ] = range(8)
 
 let g:dotnet_complete_item_len = 30
 
 " complete func
+
+function! dotnet#ns_completion(base, res)
+  for ns in s:namespace
+    if ns =~ '^' . a:base
+      call add(a:res, s:ns_to_compitem(ns))
+    endif
+  endfor
+endfunction
 
 function! dotnet#class_completion(base, res)
   for key in keys(s:class)
@@ -49,19 +57,34 @@ function! dotnet#member_to_compitem(class, member)
   endif
 endfunction
 
+function! s:ns_to_compitem(ns)
+  return {
+    \ 'word' : a:ns,
+    \ 'menu' : 'namespace',
+    \ 'kind' : 't',
+    \}
+endfunction
+
 function! s:class_to_compitem(member)
-  if !has_key(a:member, 'type') || a:member.type != s:TYPE_ENUM
+  if a:member.type == s:TYPE_ENUM
     return {
       \ 'word' : a:member.name,
       \ 'abbr' : s:abbr(a:member.name),
-      \ 'menu' : ':' . a:member.extend,
+      \ 'menu' : ':enum',
+      \ 'kind' : a:member.kind,
+      \}
+  elseif a:member.type == s:TYPE_NAMESPACE
+    return {
+      \ 'word' : a:member.name,
+      \ 'abbr' : s:abbr(a:member.name),
+      \ 'menu' : ':namespace',
       \ 'kind' : a:member.kind,
       \}
   else
     return {
       \ 'word' : a:member.name,
       \ 'abbr' : s:abbr(a:member.name),
-      \ 'menu' : ':enum',
+      \ 'menu' : ':' . a:member.extend,
       \ 'kind' : a:member.kind,
       \}
   endif
@@ -69,11 +92,14 @@ endfunction
 
 " for class dictionary
 
+let s:namespace = []
 function! dotnet#namespace(ns)
   try
     unret s:parent
   catch /.*/
   endtry
+
+  call add(s:namespace, a:ns)
 
   let parts = split(a:ns, '\.')
   for part in parts
@@ -92,6 +118,7 @@ endfunction
 
 function! s:namespace_item(name, extend, members)
   let s:class[ a:name ] = {
+    \ 'type'   : s:TYPE_NAMESPACE,
     \ 'name'   : a:name,
     \ 'kind'   : 't',
     \ 'extend' : a:extend,
@@ -102,6 +129,7 @@ endfunction
 let s:class = {}
 function! dotnet#class(name, extend, members)
   let s:class[ a:name ] = {
+    \ 'type'   : s:TYPE_CLASS,
     \ 'name'   : a:name,
     \ 'kind'   : 't',
     \ 'extend' : a:extend,
@@ -202,6 +230,26 @@ function! dotnet#getClass(name)
   return get(s:class, a:name)
 endfunction
 
+function! dotnet#getSuperClassList(name, list)
+  if !dotnet#isClassExist(a:name)
+    return
+  endif
+
+  let item = dotnet#getClass(a:name)
+  if item.extend != '' && item.extend != '-'
+    call add(a:list, item.extend)
+    call dotnet#getSuperClassList(item.extend, a:list)
+  endif
+endfunction
+
+function! dotnet#isBindingExist(name)
+  return has_key(s:binding, a:name)
+endfunction
+
+function! dotnet#getBinding(name)
+  return get(s:binding, a:name)
+endfunction
+
 function! dotnet#isEnumExist(name)
   return has_key(s:enum, a:name)
 endfunction
@@ -211,12 +259,15 @@ function! dotnet#getEnum(name)
 endfunction
 
 " load autoload/dotnet/.vim
-for file in split(globpath(&runtimepath, 'autoload/dotnet/*.vim'), '\n')
-  exe 'echo "[dotnet]load ' . substitute(file, '^.*\','','') . '"'
-  redraw
-  exe 'so ' . file
+if !exists('s:dictionary_loaded')
+  for file in split(globpath(&runtimepath, 'autoload/dotnet/*.vim'), '\n')
+    exe 'echo "[dotnet]load ' . substitute(file, '^.*\','','') . '"'
+    redraw
+    exe 'so ' . file
+  endfor
   echo '[dotnet] loaded!'
-endfor
+  let s:dictionary_loaded = 1
+endif
 
 function! dotnet#classes()
   return [ s:class, s:enum, s:binding]
