@@ -5,7 +5,9 @@ let s:type = ''
 let s:parts = []
 
 function! cs#x()
-  echo s:complete_mode
+  normal gdb
+  let g:aaa = expand('<cword>')
+  exe "normal \<c-o>"
 endfunction
 
 function! s:analize(line, cur)
@@ -180,29 +182,62 @@ function! s:normalize_type(type)
 endfunction
 
 function! s:find_type(start_line, var)
-  let type = a:var
-  let l = 0
-  while l <= a:start_line
-    let line = getline(l)
-    let line = substitute(line, '<.\{-\}>','','g')
-    let line = substitute(line, '\[.\{-\}\]','','g')
-    if line =~ '\w\+[ \t]\+\<' . a:var . '\>.*'
-      let parts = split(line, '[. \t;=]\+')
-      let pre = ''
-      for p in parts
-        if p ==# a:var
-          let type = pre
-          break
-        endif
-        let pre = p
-      endfor
-      if type != ''
-        break
-      endif
+
+  " find current function start
+  let s = a:start_line
+  while s >= 0
+    let line = getline(s)
+    if line =~ '^\s\+[a-zA-Z0-9_.]\+\s\+[a-zA-Z0-9_. ]\+('
+      break
     endif
-    let l += 1
+    let s -= 1
   endwhile
-  return type
+
+  for rng in [ [s, a:start_line], [0, s-1], [a:start_line+1, line('$')-1] ]
+    let l = rng[0]
+    while l <= rng[1]
+      let line = getline(l)
+      let line = substitute(line, '<.\{-\}>','','g')
+      let line = substitute(line, '\[.\{-\}\]','','g')
+      if line =~ '\w\+\s\+\<' . a:var . '\>.*'
+        let parts = split(line, '[. \t;=]\+')
+        let pre = ''
+        for p in parts
+          if p ==# a:var
+            return s:conv_primitive(pre)
+          endif
+          let pre = p
+        endfor
+      endif
+      let l += 1
+    endwhile
+  endfor
+
+  return a:var
+endfunction
+
+let s:primitive_dict = {
+  \ 'byte '  : 'Byte',
+  \ 'sbyte ' : 'SByte',
+  \ 'short'  : 'Int16',
+  \ 'ushort' : 'UInt16',
+  \ 'int'    : 'Int32',
+  \ 'uint'   : 'UInt32',
+  \ 'long'   : 'Int64',
+  \ 'ulong'  : 'UInt64',
+  \ 'float'  : 'Single',
+  \ 'double' : 'Double',
+  \ 'char'   : 'Char',
+  \ 'string' : 'String',
+  \ 'bool'   : 'Bool',
+  \ 'decimal': 'Decimal',
+  \ }
+function! s:conv_primitive(str)
+  if has_key(s:primitive_dict, a:str)
+    return s:primitive_dict[a:str]
+  else
+    return a:str
+  endif
 endfunction
 
 function! s:attr_completion(tag, base, res)
