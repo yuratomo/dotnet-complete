@@ -198,7 +198,9 @@ function! s:class_member_completion(base, res)
     let idx += 1
   endfor
 
-  call s:attr_completion(item.name, a:base, a:res)
+  if exists('item')
+    call s:attr_completion(item.name, a:base, a:res)
+  endif
 endfunction
 
 function! s:normalize_type(type)
@@ -234,7 +236,7 @@ function! s:find_type(start_line, var)
       let line = getline(l)
       let line = substitute(line, '<.\{-\}>','','g')
       let line = substitute(line, '\[.\{-\}\]','','g')
-      if line =~ '.\+\s\+\<' . a:var . '\>.*'
+      if line =~ '[a-zA-Z0-9_]\+\s\+\<' . a:var . '\>.*'
         let parts = split(line, '[(). \t;=]\+')
         let pre = ''
         for p in parts
