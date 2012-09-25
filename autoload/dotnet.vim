@@ -7,7 +7,7 @@ let g:dotnet_complete_item_len = 30
 function! dotnet#ns_completion(base, res)
   for ns in s:namespace
     if ns =~ '^' . a:base
-      call add(a:res, s:ns_to_compitem(ns))
+      call add(a:res, dotnet#ns_to_compitem(ns))
     endif
   endfor
 endfunction
@@ -57,7 +57,7 @@ function! dotnet#member_to_compitem(class, member)
   endif
 endfunction
 
-function! s:ns_to_compitem(ns)
+function! dotnet#ns_to_compitem(ns)
   return {
     \ 'word' : a:ns,
     \ 'menu' : 'namespace',
@@ -256,6 +256,10 @@ endfunction
 
 function! dotnet#getEnum(name)
   return get(s:enum, a:name)
+endfunction
+
+function! dotnet#getNamespaces()
+  return s:namespace
 endfunction
 
 " load autoload/dotnet/.vim

@@ -5,9 +5,6 @@ let s:type = ''
 let s:parts = []
 
 function! cs#x()
-  normal gdb
-  let g:aaa = expand('<cword>')
-  exe "normal \<c-o>"
 endfunction
 
 function! s:analize(line, cur)
@@ -18,7 +15,7 @@ function! s:analize(line, cur)
   "     V
   "     Class1 variable;
   "
-  "     variable.property1.property2.property3
+  "     variable.property1.property2.property3 = variable
   "     A                            A
   "     |                            |
   "     vstart                       pstart
@@ -29,9 +26,9 @@ function! s:analize(line, cur)
   let cur = a:cur
   let compmode = s:MODE_CLASS
 
-  " namespace?
+  " is using?
   if line[0:10] =~ '\<using\>\s'
-    let pstart = matchend(line, '\<import\>\s\+')
+    let pstart = matchend(line, '\<using\>\s\+')
     return [ pstart, s:MODE_NAMESPACE, '', [] ]
   endif
 
@@ -60,16 +57,17 @@ function! s:analize(line, cur)
   if pstart == -1
     let pstart = vstart
   endif
+  let variable = line[ vstart : cur ]
 
   " separate variable by dot and resolve type.
   let type = ''
-  let parts = split(line[ vstart : cur ], '\.')
+  let parts = split(variable, '\.')
   if !empty(parts)
     if line[cur-1] == '.'
       call add(parts, '')
     endif
     let type = s:find_type(a:line, parts[0])
-    let parts[0] = type
+    "let parts[0] = type
   else
     " value complete
     let idx = cur - 1
@@ -122,12 +120,37 @@ function! cs#complete(findstart, base)
       call s:class_new_completion(s:type, res)
 
     else
+      if len(s:parts) >= 1 
+        let match_ns = 0
+        let variable = join(s:parts, '.')
+        if variable[-1:-1] == '.'
+          let variable = variable[0:-2]
+          let type = variable
+        else
+          let type = substitute(variable, '\.[^.]\+$', '', '')
+        endif
+        let start = len(join(s:parts[0:-2], '.'))+1
+        for ns in dotnet#getNamespaces()
+          if ns =~ '^' . variable
+            let compitem = ns[start : ]
+            call add(res, dotnet#ns_to_compitem(compitem))
+          endif
+          if ns == type
+            let match_ns = 1
+          endif
+        endfor
+
+        if match_ns == 1 || s:parts[0] == 'System'
+          let s:type = substitute(type, '.*\.', '', '')
+        endif
+      endif
       call s:class_member_completion(a:base, res)
     endif
     return res
 
   endif
 endfunction
+aaa(bbb(ccc(),bbbb),bbb)
 
 function! s:class_member_completion(base, res)
   let len = len(s:parts)
@@ -182,7 +205,6 @@ function! s:normalize_type(type)
 endfunction
 
 function! s:find_type(start_line, var)
-
   " find current function start
   let s = a:start_line
   while s >= 0
@@ -289,9 +311,9 @@ function! cs#baloon()
     let s:parts[-1] = substitute(v:beval_text, '.*\.', '', '')
     let res = []
     if len(s:parts) == 1
-      if !dotnet#isClassExist(s:parts[0])
-        if dotnet#isEnumExist(s:parts[0])
-          let enum = dotnet#getEnum(s:parts[0])
+      if !dotnet#isClassExist(s:type)
+        if dotnet#isEnumExist(s:type)
+          let enum = dotnet#getEnum(s:type)
           for member in enum.members
             call add(res, member.name)
           endfor
@@ -299,8 +321,8 @@ function! cs#baloon()
         endif
         return ""
       endif
-      call dotnet#getSuperClassList(s:parts[0], res)
-      call insert(res, s:parts[0], 0)
+      call dotnet#getSuperClassList(s:type, res)
+      call insert(res, s:type, 0)
       return join(res, ' -> ')
     else
       call add(s:parts, '')
