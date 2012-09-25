@@ -57,7 +57,7 @@ function! s:analize(line, cur)
   if pstart == -1
     let pstart = vstart
   endif
-  let variable = line[ vstart : cur ]
+  let variable = substitute(line[ vstart : cur ], '(.*)', '(', 'g')
 
   " separate variable by dot and resolve type.
   let type = ''
@@ -156,6 +156,11 @@ function! s:class_member_completion(base, res)
   let idx = 0
   let class = s:normalize_type(s:type)
   for part in s:parts
+    if idx == 0
+      let idx = 1
+      continue
+    endif
+
     if !dotnet#isClassExist(class)
       if !dotnet#isEnumExist(class)
         break
@@ -166,41 +171,50 @@ function! s:class_member_completion(base, res)
       let item = dotnet#getClass(class)
     endif
 
-    if idx < len - 1
-      if idx == 0
-        let idx += 1
-        continue
-      endif
-      let _break = 0
-      while 1
-        if idx < len - 2
-          for member in item.members
-            if member.name ==# part
-              let _break = 1
-              let class = member.class
-              break
-            endif
-          endfor
-        endif
-        if _break == 1
-          break
-        endif
-        if has_key(item, 'extend') && dotnet#isClassExist(item.extend)
-          let item = dotnet#getClass(item.extend)
-        else
-          break
-        endif
-      endwhile
-    else
-      call s:attr_completion(item.name, a:base, a:res)
+    if idx == len - 1
+      break
     endif
+
+    " find target in member list
+    let _break = 0
+    while 1
+      for member in item.members
+        if member.name ==# part
+          let _break = 1
+          let class = s:normalize_retval(member.class)
+          break
+        endif
+      endfor
+      if _break == 1
+        break
+      endif
+      if has_key(item, 'extend') && dotnet#isClassExist(item.extend)
+        let item = dotnet#getClass(item.extend)
+      else
+        return
+      endif
+    endwhile
 
     let idx += 1
   endfor
+
+  call s:attr_completion(item.name, a:base, a:res)
 endfunction
 
 function! s:normalize_type(type)
-  return substitute(substitute(a:type, '<.*>', '', ''), '\[.*\]', '', '')
+  return substitute(substitute(substitute(a:type, '<.*>', '', ''), '\[.*\]', '', ''), 'static ', '', '')
+endfunction
+
+function! s:normalize_retval(type)
+  return substitute(
+        \ substitute(
+        \ substitute(
+        \ substitute(
+        \ a:type,
+        \ '<.*>', '', ''),
+        \ '\[.*\]', '', ''),
+        \ 'static ', '', ''),
+        \ 'abstruct ', '', '')
 endfunction
 
 function! s:find_type(start_line, var)
@@ -252,6 +266,7 @@ let s:primitive_dict = {
   \ 'string' : 'String',
   \ 'bool'   : 'Bool',
   \ 'decimal': 'Decimal',
+  \ 'object' : 'Object',
   \ }
 function! s:conv_primitive(str)
   if has_key(s:primitive_dict, a:str)
@@ -304,7 +319,7 @@ function! s:class_new_completion(base, res)
   endfor
 endfunction
 
-function! cs#baloon()
+function! cs#balloon()
   let [ pstart, complete_mode, s:type, s:parts ] = s:analize(v:beval_lnum, v:beval_col)
   if !empty(s:parts)
     let s:parts[-1] = substitute(v:beval_text, '.*\.', '', '')

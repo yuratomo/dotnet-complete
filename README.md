@@ -14,7 +14,7 @@ Settings
 
 ### for c# ###
     au BufNewFile,BufRead *.cs      setl omnifunc=cs#complet
-    au BufNewFile,BufRead *.cs      setl bexpr=cs#baloon()
+    au BufNewFile,BufRead *.cs      setl bexpr=cs#balloon()
     au BufNewFile,BufRead *.cs      setl ballooneval
 
 

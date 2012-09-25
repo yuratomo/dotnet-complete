@@ -1,4 +1,5 @@
 call dotnet#class('Object', '-', [
+  \ dotnet#method('ToString(', ')', 'String'),
   \ ])
 
 call dotnet#class('-', '', [
