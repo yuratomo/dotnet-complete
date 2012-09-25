@@ -220,8 +220,8 @@ function! s:find_type(start_line, var)
       let line = getline(l)
       let line = substitute(line, '<.\{-\}>','','g')
       let line = substitute(line, '\[.\{-\}\]','','g')
-      if line =~ '\w\+\s\+\<' . a:var . '\>.*'
-        let parts = split(line, '[. \t;=]\+')
+      if line =~ '.\+\s\+\<' . a:var . '\>.*'
+        let parts = split(line, '[(). \t;=]\+')
         let pre = ''
         for p in parts
           if p ==# a:var
