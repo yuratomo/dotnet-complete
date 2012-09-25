@@ -150,7 +150,6 @@ function! cs#complete(findstart, base)
 
   endif
 endfunction
-aaa(bbb(ccc(),bbbb),bbb)
 
 function! s:class_member_completion(base, res)
   let len = len(s:parts)
