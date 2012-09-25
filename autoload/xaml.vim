@@ -13,7 +13,7 @@ function! xaml#complete(findstart, base)
     let start = col('.') - 1
 
     " find start of word
-    while start > 0 && line[start - 1] !~ '[<> :/.={ \t"]'
+    while start > 0 && line[start - 1] !~ '[< :/.={ \t"]'
       let start -= 1
     endwhile
 
@@ -88,7 +88,7 @@ endfunction
 function! s:find_tag_name()
   let tag = ''
   let l = line('.')
-  let idx = col('.') - 1
+  let idx = col('.') - 2
   let line = getline(l)
   let tag_end = idx
   let coron = - 1
@@ -140,7 +140,7 @@ function! s:find_tag_name()
       endif
     endwhile
   endwhile
-  return tag
+  return substitute(tag, '.*:', '', '')
 endfunction
 
 function! s:attr_completion(tag, base, res)
