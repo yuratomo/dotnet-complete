@@ -1,4 +1,4 @@
-let [ s:MODE_NAMESPACE, s:MODE_CLASS, s:MODE_MEMBER, s:MODE_ENUM, s:MODE_NEW_CLASS ] = range(5)
+let [ s:MODE_NAMESPACE, s:MODE_CLASS, s:MODE_MEMBER, s:MODE_ENUM, s:MODE_NEW_CLASS, s:MODE_EQUAL ] = range(6)
 let s:complete_mode = s:MODE_CLASS
 
 let s:type = ''
@@ -74,8 +74,28 @@ function! s:analize(line, cur)
     while idx > 0 && line[idx] =~ '[ \t]'
       let idx -= 1
     endwhile
+
     if line[idx] == '='
-      let compmode = s:MODE_ENUM
+      let compmode = s:MODE_EQUAL
+
+      " resolve property type of forward 'equal'
+      let idx -= 1
+      while idx > 0 && line[idx] =~ '[ \t+]'
+        let idx -= 1
+      endwhile
+      let vend = idx
+      let idx -= 1
+      while idx > 0 && line[idx] !~ '[ \t+]'
+        let idx -= 1
+      endwhile
+      let vstart = idx+1
+
+      let variable = line[ vstart : vend ]
+      let parts = split(variable, '\.')
+      let type = s:find_type(a:line, parts[0])
+      let pstart = col('.')+1
+      call add(parts, '')
+
     elseif idx >= 3 && line[ idx-3 : ] =~ '\<new\>'
       " find target variable
       let idx -= 3
@@ -119,8 +139,13 @@ function! cs#complete(findstart, base)
     elseif s:complete_mode == s:MODE_NEW_CLASS
       call s:class_new_completion(s:type, res)
 
+    elseif s:complete_mode == s:MODE_EQUAL
+      call s:class_member_completion(a:base, res, 1)
+
     else
       if len(s:parts) >= 1 
+
+        " is namespace complete ?
         let match_ns = 0
         let variable = join(s:parts, '.')
         if variable[-1:-1] == '.'
@@ -142,16 +167,18 @@ function! cs#complete(findstart, base)
 
         if match_ns == 1 || s:parts[0] == 'System'
           let s:type = substitute(type, '.*\.', '', '')
+        elseif dotnet#isEnumExist(s:parts[0])
+          let s:type = s:parts[0]
         endif
       endif
-      call s:class_member_completion(a:base, res)
+      call s:class_member_completion(a:base, res, 0)
     endif
     return res
 
   endif
 endfunction
 
-function! s:class_member_completion(base, res)
+function! s:class_member_completion(base, res, type)
   let len = len(s:parts)
   let idx = 0
   let class = s:normalize_type(s:type)
@@ -160,7 +187,6 @@ function! s:class_member_completion(base, res)
       let idx = 1
       continue
     endif
-
     if !dotnet#isClassExist(class)
       if !dotnet#isEnumExist(class)
         break
@@ -199,7 +225,12 @@ function! s:class_member_completion(base, res)
   endfor
 
   if exists('item')
-    call s:attr_completion(item.name, a:base, a:res)
+    if a:type == 0
+      call s:attr_completion(item.name, a:base, a:res)
+      call s:enum_member_completion(item.name, a:base, a:res)
+    else
+      call add(a:res, dotnet#member_to_compitem('new ' . item.name, {}))
+    endif
   endif
 endfunction
 
@@ -302,6 +333,19 @@ function! s:attr_completion(tag, base, res)
   endif
 endfunction
 
+function! s:enum_member_completion(tag, base, res)
+  if !dotnet#isEnumExist(a:tag)
+    return
+  endif
+
+  let item = dotnet#getEnum(a:tag)
+  for member in item.members
+   if member.name =~ '^' . a:base
+      call add(a:res, dotnet#member_to_compitem(item.name, member))
+    endif
+  endfor
+endfunction
+
 function! s:class_new_completion(base, res)
   for key in keys(s:class)
     if key == a:base
@@ -342,7 +386,7 @@ function! cs#balloon()
       return join(res, ' -> ')
     else
       call add(s:parts, '')
-      call s:class_member_completion(s:parts[-2], res)
+      call s:class_member_completion(s:parts[-2], res, 0)
       let menus = []
       for member in res
         call add(menus, member.menu)
