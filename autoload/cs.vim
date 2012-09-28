@@ -5,6 +5,9 @@ let s:type = ''
 let s:parts = []
 
 function! cs#x()
+  echo s:type
+  echo s:parts
+  echo s:complete_mode
 endfunction
 
 function! s:analize(line, cur)
@@ -34,7 +37,7 @@ function! s:analize(line, cur)
 
   " resolve complete mode [CLASS/MEMBER]
   let idx = cur
-  while idx > 0 && line[idx] !~ '[. \t(;]'
+  while idx >= 0 && line[idx] !~ '[. \t(;]'
     let idx -= 1
   endwhile
   if cur <= 0 || line[idx] =~ '[ \t]'
@@ -62,16 +65,15 @@ function! s:analize(line, cur)
   " separate variable by dot and resolve type.
   let type = ''
   let parts = split(variable, '\.')
-  if !empty(parts)
+  if !empty(parts) && parts[0] != '='
     if line[cur-1] == '.'
       call add(parts, '')
     endif
     let type = s:find_type(a:line, parts[0])
-    "let parts[0] = type
   else
     " value complete
     let idx = cur - 1
-    while idx > 0 && line[idx] =~ '[ \t]'
+    while idx >= 0 && line[idx] =~ '[ \t]'
       let idx -= 1
     endwhile
 
@@ -80,12 +82,12 @@ function! s:analize(line, cur)
 
       " resolve property type of forward 'equal'
       let idx -= 1
-      while idx > 0 && line[idx] =~ '[ \t+]'
+      while idx >= 0 && line[idx] =~ '[ \t+]'
         let idx -= 1
       endwhile
       let vend = idx
       let idx -= 1
-      while idx > 0 && line[idx] !~ '[ \t+]'
+      while idx >= 0 && line[idx] !~ '[ \t+]'
         let idx -= 1
       endwhile
       let vstart = idx+1
@@ -229,7 +231,11 @@ function! s:class_member_completion(base, res, type)
       call s:attr_completion(item.name, a:base, a:res)
       call s:enum_member_completion(item.name, a:base, a:res)
     else
-      call add(a:res, dotnet#member_to_compitem('new ' . item.name, {}))
+      if has_key(s:primitive_dict, item.name)
+        call s:enum_member_completion(item.name, a:base, a:res)
+      else
+        call add(a:res, dotnet#member_to_compitem('new ' . item.name, {}))
+      endif
     endif
   endif
 endfunction
