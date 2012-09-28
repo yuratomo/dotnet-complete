@@ -64,7 +64,7 @@ function! s:analize(line, cur)
 
   " separate variable by dot and resolve type.
   let type = ''
-  let parts = split(variable, '\.')
+  let parts = split(s:normalize_prop(variable), '\.')
   if !empty(parts) && parts[0] != '='
     if line[cur-1] == '.'
       call add(parts, '')
@@ -93,7 +93,7 @@ function! s:analize(line, cur)
       let vstart = idx+1
 
       let variable = line[ vstart : vend ]
-      let parts = split(variable, '\.')
+      let parts = split(s:normalize_prop(variable), '\.')
       let type = s:find_type(a:line, parts[0])
       let pstart = col('.')+1
       call add(parts, '')
@@ -110,7 +110,7 @@ function! s:analize(line, cur)
       while new_vstart > 0 && line[new_vstart - 1] !~ '[ \t"]'
         let new_vstart -= 1
       endwhile
-      let new_vparts = split(line[ new_vstart : idx ], '\.')
+      let new_vparts = split(s:normalize_prop(line[ new_vstart : idx ]), '\.')
       let type = s:find_type(a:line, new_vparts[0])
 
       let compmode = s:MODE_NEW_CLASS
@@ -231,9 +231,8 @@ function! s:class_member_completion(base, res, type)
       call s:attr_completion(item.name, a:base, a:res)
       call s:enum_member_completion(item.name, a:base, a:res)
     else
-      if has_key(s:primitive_dict, item.name)
-        call s:enum_member_completion(item.name, a:base, a:res)
-      else
+      call s:enum_member_completion(item.name, a:base, a:res)
+      if !has_key(s:primitive_dict, item.name)
         call add(a:res, dotnet#member_to_compitem('new ' . item.name, {}))
       endif
     endif
@@ -241,7 +240,13 @@ function! s:class_member_completion(base, res, type)
 endfunction
 
 function! s:normalize_type(type)
-  return substitute(substitute(substitute(a:type, '<.*>', '', ''), '\[.*\]', '', ''), 'static ', '', '')
+  return substitute(
+        \ substitute(
+        \ substitute(
+        \ a:type, 
+        \ '<.*>', '', ''), 
+        \ '\[.*\]', '', ''),
+        \ 'static ', '', '')
 endfunction
 
 function! s:normalize_retval(type)
@@ -254,6 +259,14 @@ function! s:normalize_retval(type)
         \ '\[.*\]', '', ''),
         \ 'static ', '', ''),
         \ 'abstruct ', '', '')
+endfunction
+
+function! s:normalize_prop(prop)
+  return substitute(
+        \ substitute(
+        \ a:prop,
+        \ '<.\{-\}>','','g'),
+        \ '\[.\{-\}\]','','g')
 endfunction
 
 function! s:find_type(start_line, var)
@@ -270,9 +283,7 @@ function! s:find_type(start_line, var)
   for rng in [ [s, a:start_line], [0, s-1], [a:start_line+1, line('$')-1] ]
     let l = rng[0]
     while l <= rng[1]
-      let line = getline(l)
-      let line = substitute(line, '<.\{-\}>','','g')
-      let line = substitute(line, '\[.\{-\}\]','','g')
+      let line = s:normalize_prop(getline(l))
       if line =~ '[a-zA-Z0-9_]\+\s\+\<' . a:var . '\>.*'
         let parts = split(line, '[(). \t;=]\+')
         let pre = ''
