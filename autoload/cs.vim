@@ -210,6 +210,7 @@ function! s:class_member_completion(base, res, type)
         if member.name ==# part
           let _break = 1
           let class = s:normalize_retval(member.class)
+          let class = s:conv_primitive(class)
           break
         endif
       endfor
