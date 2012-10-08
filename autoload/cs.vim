@@ -4,12 +4,6 @@ let s:complete_mode = s:MODE_CLASS
 let s:type = ''
 let s:parts = []
 
-function! cs#x()
-  echo s:type
-  echo s:parts
-  echo s:complete_mode
-endfunction
-
 function! s:analize(line, cur)
   " find start of word
   "
@@ -188,47 +182,7 @@ function! s:class_member_completion(base, res, type)
 
   " this member ?
   if parts[0] == 'this'
-    let line = getline('.')
-    let namespace = s:this_namespace()
-    let class = s:this_class(line('.'))
-
-    let tags = taglist(namespace . '.' . class . '\..*$')
-    for tag in tags
-      let name = substitute(tag.name, namespace . '\.' . class . '\.', '', '')
-      if name == class
-        continue
-      endif
-      let ttype = split(substitute(tag.cmd, '\s\+\<' . name . '\>.*$', '', ''), '\s\+')[-1]
-      if index(g:cs_access_modifier, ttype) >= 0
-        let ttype = name
-      endif
-      if len == 2
-        if name !~ '^' . a:base
-          continue
-        endif
-        let detail = substitute(substitute(tag.cmd, '^.*\<' . name . '\>\s*', '', ''), '$/', '','')
-        call add(a:res, dotnet#member_to_compitem('this', 
-          \ {
-          \   'name'  : name,
-          \   'class' : ttype,
-          \   'detail': detail,
-          \   'kind'  : tag.kind,
-          \ }))
-      else
-        if parts[1] == name
-          call remove(parts, 0)
-          let type = ttype
-          break
-        endif
-      endif
-    endfor
-
-    if len <= 2
-      return
-    endif
-    if type != 'this'
-      let len -= 1
-    endif
+    let type = s:this_class(line('.'))
   endif
 
   " std .net class member ?
@@ -270,8 +224,15 @@ function! s:class_member_completion(base, res, type)
       if _break == 1
         break
       endif
-      if has_key(item, 'extend') && dotnet#isClassExist(item.extend)
-        let item = dotnet#getClass(item.extend)
+      if has_key(item, 'extend')
+        if dotnet#isClassExist(item.extend)
+          let item = dotnet#getClass(item.extend)
+        else
+          let item = dotnet#getTag(item.extend)
+          if empty(item)
+            unlet item
+          endif
+        endif
       else
         return
       endif
@@ -496,6 +457,13 @@ function! cs#balloon()
   return ""
 endfunction
 
+" test
+function! cs#x()
+  echo s:type
+  echo s:parts
+  echo s:complete_mode
+endfunction
+
 function! cs#test()
   let line = line('.')
   let cur = col('.') - 1
@@ -510,4 +478,6 @@ function! cs#test()
   endfor
 endfunction
 
-let [ s:class, s:enum, s:binding ] = dotnet#classes()
+if !exists('s:class')
+  let [ s:class, s:enum, s:binding ] = dotnet#classes()
+endif

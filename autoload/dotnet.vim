@@ -254,8 +254,22 @@ function! dotnet#getSuperClassList(name, list)
 endfunction
 
 function! dotnet#getTag(name)
-  let class = s:def_class(a:name, '', [])
-  let tags = taglist('^.*.' . a:name . '\..*$')
+  let types = filter(taglist('^.*.' . a:name . '\>'), 'v:val.kind == "c"')
+  if empty(types)
+    return {}
+  endif
+  let type = types[0]
+  let extend = ''
+  if has_key(type, 'inherits')
+    let extend = type.inherits
+  endif
+
+  let tags = taglist('^.*\.' . a:name . '\..*$')
+  if empty(tags)
+    return {}
+  endif
+
+  let class = s:def_class(a:name, extend, [])
   for tag in tags
     let name = substitute(tag.name, '.*' . a:name . '\.', '', '')
     let ttype = split(substitute(tag.cmd, '\s*\<' . name . '\>.*$', '', ''), '\s\+')[-1]
