@@ -1,6 +1,14 @@
 let [ s:TYPE_NAMESPACE, s:TYPE_CLASS, s:TYPE_ENUM , s:TYPE_EVENT, s:TYPE_METHOD, s:TYPE_PROP, s:TYPE_FIELD, s:TYPE_BINDING ] = range(8)
 
 let g:dotnet_complete_item_len = 30
+let g:cs_access_modifier = [
+  \ 'public',
+  \ 'private',
+  \ 'protected',
+  \ 'internal',
+  \ 'static',
+  \ ]
+
 
 " complete func
 
@@ -128,16 +136,19 @@ endfunction
 
 let s:class = {}
 function! dotnet#class(name, extend, members)
-  let s:class[ a:name ] = {
+  let s:class[ a:name ] = s:def_class(a:name, a:extend, a:members)
+  if exists('s:parent') && index(s:parent.members, a:name) == -1
+    call add(s:parent.members, dotnet#prop(a:name, a:name))
+  endif
+endfunction
+function! s:def_class(name, extend, members)
+  return {
     \ 'type'   : s:TYPE_CLASS,
     \ 'name'   : a:name,
     \ 'kind'   : 't',
     \ 'extend' : a:extend,
     \ 'members': a:members,
     \ }
-  if exists('s:parent') && index(s:parent.members, a:name) == -1
-    call add(s:parent.members, dotnet#prop(a:name, a:name))
-  endif
 endfunction
 
 function! dotnet#method(name, detail, class)
@@ -240,6 +251,20 @@ function! dotnet#getSuperClassList(name, list)
     call add(a:list, item.extend)
     call dotnet#getSuperClassList(item.extend, a:list)
   endif
+endfunction
+
+function! dotnet#getTag(name)
+  let class = s:def_class(a:name, '', [])
+  let tags = taglist('^.*.' . a:name . '\..*$')
+  for tag in tags
+    let name = substitute(tag.name, '.*' . a:name . '\.', '', '')
+    let ttype = split(substitute(tag.cmd, '\s*\<' . name . '\>.*$', '', ''), '\s\+')[-1]
+    if index(g:cs_access_modifier, ttype) >= 0
+      let ttype = name
+    endif
+    call add(class.members, dotnet#prop(name, ttype))
+  endfor
+  return class
 endfunction
 
 function! dotnet#isBindingExist(name)

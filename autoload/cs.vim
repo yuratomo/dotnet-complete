@@ -51,7 +51,7 @@ function! s:analize(line, cur)
   " find pstart and vstart
   let vstart = cur
   let pstart = -1
-  while vstart > 0 && line[vstart - 1] !~ '[ \t"]'
+  while vstart > 0 && line[vstart - 1] !~ '[ \t("]'
     if pstart == -1 && line[vstart - 1] == '.'
       let pstart = vstart
     endif
@@ -183,15 +183,68 @@ endfunction
 function! s:class_member_completion(base, res, type)
   let len = len(s:parts)
   let idx = 0
-  let class = s:normalize_type(s:type)
-  for part in s:parts
+  let parts = s:parts
+  let type  = s:type
+
+  " this member ?
+  if parts[0] == 'this'
+    let line = getline('.')
+    let namespace = s:this_namespace()
+    let class = s:this_class(line('.'))
+
+    let tags = taglist(namespace . '.' . class . '\..*$')
+    for tag in tags
+      let name = substitute(tag.name, namespace . '\.' . class . '\.', '', '')
+      if name == class
+        continue
+      endif
+      let ttype = split(substitute(tag.cmd, '\s\+\<' . name . '\>.*$', '', ''), '\s\+')[-1]
+      if index(g:cs_access_modifier, ttype) >= 0
+        let ttype = name
+      endif
+      if len == 2
+        if name !~ '^' . a:base
+          continue
+        endif
+        let detail = substitute(substitute(tag.cmd, '^.*\<' . name . '\>\s*', '', ''), '$/', '','')
+        call add(a:res, dotnet#member_to_compitem('this', 
+          \ {
+          \   'name'  : name,
+          \   'class' : ttype,
+          \   'detail': detail,
+          \   'kind'  : tag.kind,
+          \ }))
+      else
+        if parts[1] == name
+          call remove(parts, 0)
+          let type = ttype
+          break
+        endif
+      endif
+    endfor
+
+    if len <= 2
+      return
+    endif
+    if type != 'this'
+      let len -= 1
+    endif
+  endif
+
+  " std .net class member ?
+  let class = s:conv_primitive(s:normalize_type(type))
+  for part in parts
     if idx == 0
       let idx = 1
       continue
     endif
     if !dotnet#isClassExist(class)
       if !dotnet#isEnumExist(class)
-        break
+        let item = dotnet#getTag(class)
+        if empty(item)
+          unlet item
+          break
+        endif
       else
         let item = dotnet#getEnum(class)
       endif
@@ -275,7 +328,7 @@ function! s:find_type(start_line, var)
   let s = a:start_line
   while s >= 0
     let line = getline(s)
-    if line =~ '^\s\+[a-zA-Z0-9_.]\+\s\+[a-zA-Z0-9_. ]\+('
+    if line =~ '^\s\+[a-zA-Z0-9_.<>]\+\s\+[a-zA-Z0-9_.<> ]\+('
       break
     endif
     let s -= 1
@@ -289,7 +342,7 @@ function! s:find_type(start_line, var)
         let parts = split(line, '[(). \t;=]\+')
         let pre = ''
         for p in parts
-          if p ==# a:var
+          if p ==# a:var && index(g:cs_access_modifier, pre) < 0
             return s:conv_primitive(pre)
           endif
           let pre = p
@@ -300,6 +353,31 @@ function! s:find_type(start_line, var)
   endfor
 
   return a:var
+endfunction
+
+function! s:this_class(start_line)
+  let s = a:start_line
+  while s >= 0
+    let line = getline(s)
+    if line =~ '\s\+.*\s\+class\s\+' && line !~ "^\s*\/\/"
+      return substitute(substitute(line, '.*class\s\+', '', ''), '\s\+.*$', '', '')
+    endif
+    let s -= 1
+  endwhile
+  return ''
+endfunction
+
+function! s:this_namespace()
+  let s = 0
+  let e = line('$')
+  while s < e
+    let line = getline(s)
+    if line =~ '\s*namespace\s\+' && line !~ "^\s*\/\/"
+      return substitute(substitute(line, '.*namespace\s\+', '', ''), '\s\+.*$', '', '')
+    endif
+    let s += 1
+  endwhile
+  return ''
 endfunction
 
 let s:primitive_dict = {
@@ -329,10 +407,13 @@ endfunction
 
 function! s:attr_completion(tag, base, res)
   if !dotnet#isClassExist(a:tag)
-    return
+    let item = dotnet#getTag(a:tag)
+    if empty(item)
+      return
+    endif
+  else
+    let item = dotnet#getClass(a:tag)
   endif
-
-  let item = dotnet#getClass(a:tag)
   for member in item.members
 
     " negrect get_ and set_
@@ -413,6 +494,20 @@ function! cs#balloon()
     endif
   endif
   return ""
+endfunction
+
+function! cs#test()
+  let line = line('.')
+  let cur = col('.') - 1
+  let [ pstart, s:complete_mode, s:type, s:parts ] = s:analize(line, cur)
+  echo s:type
+  echo s:parts
+  echo s:complete_mode
+
+  let tl = taglist(s:type)
+  for t in tl
+    echo t.cmd
+  endfor
 endfunction
 
 let [ s:class, s:enum, s:binding ] = dotnet#classes()
