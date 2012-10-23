@@ -19,8 +19,8 @@ function! s:analize(line, cur)
   "
   "  parts = [ variable, property1, property2, property3 ]
   "
-  let line = getline(a:line)[ 0 : cur-1]
   let cur = a:cur
+  let line = getline(a:line)[ 0 : cur-1 ]
   let compmode = s:MODE_CLASS
 
   " is using?
