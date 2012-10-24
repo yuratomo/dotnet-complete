@@ -45,7 +45,17 @@ function! s:analize(line, cur)
   " find pstart and vstart
   let vstart = cur
   let pstart = -1
-  while vstart > 0 && line[vstart - 1] !~ '[ \t("]'
+  let end_bracket = 0
+  while vstart > 0 && line[vstart - 1] !~ '[ \t"]'
+    if line[vstart - 1] == ')'
+      let end_bracket = end_bracket + 1
+    elseif line[vstart - 1] == '('
+      if end_bracket == 0
+        break
+      else
+        let end_bracket = end_bracket - 1
+      endif
+    endif
     if pstart == -1 && line[vstart - 1] == '.'
       let pstart = vstart
     endif
@@ -54,7 +64,7 @@ function! s:analize(line, cur)
   if pstart == -1
     let pstart = vstart
   endif
-  let variable = substitute(line[ vstart : cur ], '(.*)', '(', 'g')
+  let variable = substitute(line[ vstart : cur ], '([^()]*)', '(', 'g')
 
   " separate variable by dot and resolve type.
   let type = ''

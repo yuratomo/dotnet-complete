@@ -304,7 +304,7 @@ endfunction
 " load autoload/dotnet/.vim
 if !exists('s:dictionary_loaded')
   for file in split(globpath(&runtimepath, 'autoload/dotnet/*.vim'), '\n')
-    exe 'echo "[dotnet-complete]load ' . substitute(file, '^.*\','','') . '"'
+    exe 'echo "[dotnet-complete]load ' . substitute(file, '^.*[\/]','','') . '"'
     redraw
     exe 'so ' . file
   endfor
