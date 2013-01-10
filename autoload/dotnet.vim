@@ -54,6 +54,7 @@ function! dotnet#member_to_compitem(class, member)
       \ 'abbr' : s:abbr(a:class),
       \ 'menu' : a:class,
       \ 'kind' : 't',
+      \ 'dup'  : 1,
       \}
   else
     return {
@@ -61,6 +62,7 @@ function! dotnet#member_to_compitem(class, member)
       \ 'abbr' : s:abbr(a:member.name),
       \ 'menu' : '[' . a:class . '] ' . a:member.class . ' ' . a:member.name . a:member.detail,
       \ 'kind' : a:member.kind,
+      \ 'dup'  : 1,
       \}
   endif
 endfunction
@@ -111,9 +113,9 @@ function! dotnet#namespace(ns)
 
   let parts = split(a:ns, '\.')
   for part in parts
-    if exists('s:parent') && index(s:parent.members, part) == -1
-      call add(s:parent.members, dotnet#prop(part, part))
-    endif
+    "if exists('s:parent') && index(s:parent.members, part) == -1
+    "  call add(s:parent.members, dotnet#prop(part, part))
+    "endif
 
     if !dotnet#isClassExist(part)
       call s:namespace_item(part, '', [])

@@ -26,7 +26,16 @@ function! s:analize(line, cur)
   " is using?
   if line[0:10] =~ '\<using\>\s'
     let pstart = matchend(line, '\<using\>\s\+')
-    return [ pstart, s:MODE_NAMESPACE, '', [] ]
+    let exist = 0
+    for ns in s:namespace
+      if ns =~ '^' . line[ pstart : ]
+        let exist = 1
+        break
+      endif
+    endfor
+    if exist == 1
+      return [ pstart, s:MODE_NAMESPACE, '', [] ]
+    endif
   endif
 
   " resolve complete mode [CLASS/MEMBER]
@@ -243,6 +252,7 @@ function! s:class_member_completion(base, res, type)
           let item = dotnet#getTag(item.extend)
           if empty(item)
             unlet item
+            break
           endif
         endif
       else
@@ -437,25 +447,115 @@ function! s:class_new_completion(base, res)
   endfor
 endfunction
 
+function! cs#showRef()
+  if !exists('g:cs#statusline')
+    let g:cs#statusline = &statusline
+  endif
+
+  let items = s:ref('', line('.'), col('.'))
+  if len(items) == 0
+    return ""
+  endif
+
+  let b:ref = {
+  \ 'index' : -1,
+  \ 'items' : items,
+  \ 'line'  : line('.'),
+  \ }
+  call cs#nextRef()
+
+  augroup dotnetapi
+    au!
+    au InsertLeave  <buffer> call cs#clearRef()
+    au CursorMovedI <buffer> call cs#checkLineForRef()
+  augroup END
+  return ""
+endfunction
+
+function! s:toStatusLineString(str)
+  return substitute(
+        \ substitute(
+        \ substitute(
+        \ substitute(
+        \ a:str, 
+        \ '[', '%#Title#[', ''), 
+        \ ']', ']%#Function#', ''), 
+        \ '(', '%#Normal#(', ''),
+        \ '//','%#Comment#//', '')
+endfunction
+
+function! cs#nextRef()
+  return s:prevNextRef(1)
+endfunction
+function! cs#prevRef()
+  return s:prevNextRef(-1)
+endfunction
+function! s:prevNextRef(adjust)
+  if exists("b:ref")
+    let b:ref.index += a:adjust
+    if b:ref.index >= len(b:ref.items)
+      let b:ref.index = 0
+    elseif b:ref.index < 0
+      let b:ref.index = len(b:ref.items) - 1
+    endif
+    let idx = b:ref.index + 1
+    let &l:statusline = '(' . idx . '/' . len(b:ref.items) . ') %#Function#' . s:toStatusLineString(b:ref.items[ b:ref.index ])
+  endif
+  return ""
+endfunction
+
+function! cs#checkLineForRef()
+  if exists("b:ref")
+    if b:ref.line != line('.')
+      call cs#clearRef()
+    endif
+  endif
+endfunction
+
+function! cs#clearRef()
+  let &l:statusline = g:cs#statusline
+  augroup dotnetapi
+    au!
+  augroup END
+endfunction
+
 function! cs#balloon()
-  let [ pstart, complete_mode, s:type, s:parts ] = s:analize(v:beval_lnum, v:beval_col)
+  return join(s:ref(v:beval_text, v:beval_lnum, v:beval_col), "\n")
+endfunction
+
+function! s:ref(word, lnum, col)
+  let line = getline('.')
+  let cc = strridx(line, '(', a:col)
+  if cc == -1
+    let cc = a:col
+  else
+    let cc -= 1
+  endif
+
+  let [ pstart, complete_mode, s:type, s:parts ] = s:analize(a:lnum, cc)
   if !empty(s:parts)
-    let s:parts[-1] = substitute(v:beval_text, '.*\.', '', '')
+    if a:word == ''
+      let s:parts[-1] = line[ pstart : cc]
+    else
+      let s:parts[-1] = substitute(a:word, '.*\.', '', '')
+    endif
     let res = []
     if len(s:parts) == 1
-      if !dotnet#isClassExist(s:type)
-        if dotnet#isEnumExist(s:type)
-          let enum = dotnet#getEnum(s:type)
-          for member in enum.members
-            call add(res, member.name)
-          endfor
-          return join(res, "\n")
-        endif
-        return ""
+      if !cs#isClassExist(s:parts[0])
+        return [ "" ]
       endif
-      call dotnet#getSuperClassList(s:type, res)
-      call insert(res, s:type, 0)
-      return join(res, ' -> ')
+"     call cs#getSuperClassList(s:parts[0], res)
+"     call insert(res, s:parts[0], 0)
+"     return [ join(res, ' -> ') ]
+      let item = cs#getClass(s:parts[0])
+      let menus = []
+      for member in item.members
+       if member.name =~ '^' . s:parts[0]
+          call add(menus, 
+            \ '[' . s:parts[0] . '] ' . member.name . member.detail)
+        endif
+      endfor
+      return menus
     else
       call add(s:parts, '')
       call s:class_member_completion(s:parts[-2], res, 0)
@@ -463,10 +563,10 @@ function! cs#balloon()
       for member in res
         call add(menus, member.menu)
       endfor
-      return join(menus, "\n")
+      return menus
     endif
   endif
-  return ""
+  return [ "" ]
 endfunction
 
 " test
