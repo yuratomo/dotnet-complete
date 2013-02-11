@@ -7,3 +7,6 @@ function! cs#showRef()
   return dotnet#showRef()
 endfunction
 
+function! cs#balloon()
+  return dotnet#balloon()
+endfunction

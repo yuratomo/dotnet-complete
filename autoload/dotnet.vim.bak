@@ -268,7 +268,7 @@ function! s:class_member_completion(base, res, type)
   " this or super class member ?
   if parts[0] == 'this' || parts[0] == 'base'
     let [ type, super ] = s:this_class(line('.'))
-    if parts[0] == 'base'
+    if parts[0] == 'super'
       let type = super
     else
       let t = dotnet#getTag(type)
@@ -443,7 +443,7 @@ function! s:this_class(start_line)
       let _class = substitute(substitute(line, '.*\<class\s\+', '', ''), '\s\+.*$', '', '')
     endif
     if finded_class == 1
-      if line =~ '.*\s*:\s*' && line !~ "^\s*\/\/"
+      if line =~ '.*\s\+:\s\*' && line !~ "^\s*\/\/"
         let _super = substitute(substitute(line, '.*:\s*', '', ''), '\s\+.*$', '', '')
       endif
       if line =~ '{'
