@@ -123,8 +123,12 @@ function! s:analize(line, cur)
       let variable = line[ vstart : vend ]
       let parts = split(s:normalize_prop(variable), '\.')
       let type = s:find_type(a:line, parts[0])
-      let pstart = col('.')+1
+      " this class member
+      if type.class == variable
+        call insert(parts, 'this', 0)
+      endif
       call add(parts, '')
+      let pstart = col('.')+1
 
     elseif idx >= 3 && line[ idx-3 : ] =~ '\<new\>'
       " find target variable
@@ -481,7 +485,7 @@ let s:primitive_dict = {
   \ 'double' : 'Double',
   \ 'char'   : 'Char',
   \ 'string' : 'String',
-  \ 'bool'   : 'Bool',
+  \ 'bool'   : 'Boolean',
   \ 'decimal': 'Decimal',
   \ 'object' : 'Object',
   \ }

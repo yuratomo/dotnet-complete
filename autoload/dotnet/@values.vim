@@ -10,6 +10,11 @@ call dotnet#enum('bool', [
   \ dotnet#prop('False', ''),
   \ ])
 
+call dotnet#enum('Boolean', [
+  \ dotnet#prop('true', ''),
+  \ dotnet#prop('false', ''),
+  \ ])
+
 call dotnet#enum('int32', [
   \ dotnet#prop('0', ''),
   \ dotnet#prop('1', ''),
@@ -17,7 +22,26 @@ call dotnet#enum('int32', [
   \ dotnet#prop('200', ''),
   \ ])
 
+call dotnet#enum('Int32', [
+  \ dotnet#prop('0', ''),
+  \ dotnet#prop('1', ''),
+  \ dotnet#prop('100', ''),
+  \ dotnet#prop('200', ''),
+  \ ])
+
+call dotnet#enum('UInt32', [
+  \ dotnet#prop('0', ''),
+  \ dotnet#prop('1', ''),
+  \ dotnet#prop('100', ''),
+  \ dotnet#prop('200', ''),
+  \ ])
+
 call dotnet#enum('float64', [
+  \ dotnet#prop('10.0', ''),
+  \ dotnet#prop('100.0', ''),
+  \ ])
+
+call dotnet#enum('Single', [
   \ dotnet#prop('10.0', ''),
   \ dotnet#prop('100.0', ''),
   \ ])
