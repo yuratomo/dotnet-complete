@@ -18,4 +18,3 @@ call dotnet#class('-', '', [
   \ dotnet#prop('x:Null', ''),
   \ dotnet#prop('x:Class', ''),
   \ ])
-
