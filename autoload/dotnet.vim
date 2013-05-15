@@ -234,7 +234,6 @@ function! dotnet#ns_completion(base, res)
   endfor
 endfunction
 
-
 function! s:this_member_completion(base, res)
     let type = s:type
     let parts = s:parts
@@ -250,6 +249,19 @@ function! dotnet#class_completion(base, res)
     if key =~ '^' . a:base
       let item = s:class[ key ]
       call add(a:res, s:class_to_compitem(item))
+    endif
+  endfor
+endfunction
+
+function! s:enum_member_completion(tag, base, res)
+  if !dotnet#isEnumExist(a:tag)
+    return
+  endif
+
+  let item = dotnet#getEnum(a:tag)
+  for member in item.members
+   if member.name =~ '^' . a:base
+      call add(a:res, dotnet#member_to_compitem(item.name, member))
     endif
   endfor
 endfunction
@@ -507,7 +519,7 @@ function! s:attr_completion(tag, base, res, static)
     let item = dotnet#getClass(a:tag)
   endif
   for member in item.members
-    if a:static == 1 && member.static == 0
+    if a:static == 1 && has_key(member, 'static') && member.static == 0
       continue
     endif
 
@@ -601,17 +613,12 @@ function! s:keyword_to_compitem(func)
     \}
 endfunction
 
-function! s:enum_member_completion(tag, base, res)
-  if !dotnet#isEnumExist(a:tag)
-    return
+let s:class = {}
+function! dotnet#class(name, extend, members)
+  let s:class[ a:name ] = s:def_class(a:name, a:extend, a:members)
+  if exists('s:parent') && index(s:parent.members, a:name) == -1
+    call add(s:parent.members, dotnet#prop(a:name, a:name))
   endif
-
-  let item = dotnet#getEnum(a:tag)
-  for member in item.members
-   if member.name =~ '^' . a:base
-      call add(a:res, dotnet#member_to_compitem(item.name, member))
-    endif
-  endfor
 endfunction
 
 let s:namespace = []
@@ -638,22 +645,14 @@ function! dotnet#namespace(ns)
   endfor
 endfunction
 
-function! s:namespace_item(name, extend, members)
-  let s:class[ a:name ] = {
-    \ 'type'   : s:TYPE_NAMESPACE,
-    \ 'name'   : a:name,
-    \ 'kind'   : 't',
-    \ 'extend' : a:extend,
-    \ 'members': a:members,
-    \ }
-endfunction
-
-let s:class = {}
-function! dotnet#class(name, extend, members)
-  let s:class[ a:name ] = s:def_class(a:name, a:extend, a:members)
-  if exists('s:parent') && index(s:parent.members, a:name) == -1
-    call add(s:parent.members, dotnet#prop(a:name, a:name))
-  endif
+let s:keyword = []
+function! dotnet#keyword(name, detail)
+  call add(s:keyword, 
+    \ {
+    \ 'type'      : s:TYPE_KEYWORD,
+    \ 'name'      : a:name,
+    \ 'detail'    : a:detail
+    \ })
 endfunction
 
 function! s:def_class(name, extend, members)
@@ -664,16 +663,6 @@ function! s:def_class(name, extend, members)
     \ 'extend' : a:extend,
     \ 'members': a:members,
     \ }
-endfunction
-
-let s:keyword = []
-function! dotnet#keyword(name, detail)
-  call add(s:keyword, 
-    \ {
-    \ 'type'      : s:TYPE_KEYWORD,
-    \ 'name'      : a:name,
-    \ 'detail'    : a:detail
-    \ })
 endfunction
 
 function! dotnet#method(name, detail, class)
@@ -746,6 +735,16 @@ function! dotnet#isMethod(member)
   else
     return 0
   endif
+endfunction
+
+function! s:namespace_item(name, extend, members)
+  let s:class[ a:name ] = {
+    \ 'type'   : s:TYPE_NAMESPACE,
+    \ 'name'   : a:name,
+    \ 'kind'   : 't',
+    \ 'extend' : a:extend,
+    \ 'members': a:members,
+    \ }
 endfunction
 
 function! dotnet#isEvent(member)
