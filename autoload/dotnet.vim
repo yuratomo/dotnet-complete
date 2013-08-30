@@ -427,9 +427,19 @@ function! s:find_type(start_line, var)
       if line =~ '[a-zA-Z0-9_]\+\s\+\<' . a:var . '\>.*'
         let parts = split(line, '[(). \t;=]\+')
         let pre = ''
+        let var_mode = 0
         for p in parts
           if p ==# a:var && index(g:cs_access_modifier, pre) < 0
             let result.class = s:conv_primitive(pre)
+            let result.mode = s:ROOT_IS_VAR
+            " 2013/08/30 var‚ÌŒ^‰ðŒˆ
+            if result.class != 'var'
+              return result
+            else
+              let var_mode = 1
+            endif
+          elseif var_mode == 1 && pre == 'new'
+            let result.class = s:conv_primitive(p)
             let result.mode = s:ROOT_IS_VAR
             return result
           endif
