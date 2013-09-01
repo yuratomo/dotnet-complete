@@ -287,11 +287,11 @@ function! s:class_member_completion(base, res, type)
     if parts[0] == 'base'
       let type = super
     else
-      let t = dotnet#getTag(type)
-      if empty(t)
+"     let t = dotnet#getTag(type)
+"     if empty(t)
         let type = super
-      endif
-      let item = t
+"     endif
+"     let item = t
     endif
   endif
 
@@ -304,13 +304,13 @@ function! s:class_member_completion(base, res, type)
     endif
     if !dotnet#isClassExist(class)
       if !dotnet#isEnumExist(class)
-        let item = dotnet#getTag(class)
-        if empty(item)
-          if exists('item')
-            unlet item
-          endif
+"       let item = dotnet#getTag(class)
+"       if empty(item)
+"         if exists('item')
+"           unlet item
+"         endif
           break
-        endif
+"       endif
       else
         let item = dotnet#getEnum(class)
       endif
@@ -340,11 +340,11 @@ function! s:class_member_completion(base, res, type)
         if dotnet#isClassExist(item.extend)
           let item = dotnet#getClass(item.extend)
         else
-          let item = dotnet#getTag(item.extend)
-          if empty(item)
-            unlet item
+"         let item = dotnet#getTag(item.extend)
+"         if empty(item)
+"           unlet item
             break
-          endif
+"         endif
         endif
       else
         return
@@ -521,10 +521,10 @@ endfunction
 
 function! s:attr_completion(tag, base, res, static)
   if !dotnet#isClassExist(a:tag)
-    let item = dotnet#getTag(a:tag)
-    if empty(item)
+"   let item = dotnet#getTag(a:tag)
+"   if empty(item)
       return
-    endif
+"   endif
   else
     let item = dotnet#getClass(a:tag)
   endif
@@ -785,33 +785,35 @@ function! dotnet#getSuperClassList(name, list)
   endif
 endfunction
 
-function! dotnet#getTag(name)
-  let types = filter(taglist('^.*.' . a:name . '\>'), 'v:val.kind == "c"')
-  if empty(types)
-    return {}
-  endif
-  let type = types[0]
-  let extend = ''
-  if has_key(type, 'inherits')
-    let extend = type.inherits
-  endif
-
-  let tags = taglist('^.*\.' . a:name . '\..*$')
-  if empty(tags)
-    return {}
-  endif
-
-  let class = s:def_class(a:name, extend, [])
-  for tag in tags
-    let name = substitute(tag.name, '.*' . a:name . '\.', '', '')
-    let ttype = split(substitute(tag.cmd, '\s*\<' . name . '\>.*$', '', ''), '\s\+')[-1]
-    if index(g:cs_access_modifier, ttype) >= 0
-      let ttype = name
-    endif
-    call add(class.members, dotnet#prop(name, ttype))
-  endfor
-  return class
-endfunction
+" その都度tagsからロードしていると遅いので、
+" タグ → s:class にロードして使うようにする
+" function! dotnet#getTag(name)
+"   let types = filter(taglist('^.*.' . a:name . '\>'), 'v:val.kind == "c"')
+"   if empty(types)
+"     return {}
+"   endif
+"   let type = types[0]
+"   let extend = ''
+"   if has_key(type, 'inherits')
+"     let extend = type.inherits
+"   endif
+" 
+"   let tags = taglist('^.*\.' . a:name . '\..*$')
+"   if empty(tags)
+"     return {}
+"   endif
+" 
+"   let class = s:def_class(a:name, extend, [])
+"   for tag in tags
+"     let name = substitute(tag.name, '.*' . a:name . '\.', '', '')
+"     let ttype = split(substitute(tag.cmd, '\s*\<' . name . '\>.*$', '', ''), '\s\+')[-1]
+"     if index(g:cs_access_modifier, ttype) >= 0
+"       let ttype = name
+"     endif
+"     call add(class.members, dotnet#prop(name, ttype))
+"   endfor
+"   return class
+" endfunction
 
 function! dotnet#isBindingExist(name)
   return has_key(s:binding, a:name)
@@ -951,6 +953,42 @@ function! s:ref(word, lnum, col)
   return menus
 endfunction
 
+" load from tags
+function! dotnet#loadFromTags()
+  let tlist = taglist('.*')
+
+  " classes
+  let defs = {}
+  let classes = filter(copy(tlist), 'v:val.kind == "c"')
+  for class in classes
+    let cname = substitute(class.name, '.*\.', '', '')
+    let extend = ''
+    if has_key(class, 'inherits')
+      let extend = class.inherits
+    endif
+    let defs[cname] = s:def_class(cname, extend, [])
+  endfor
+
+  " members
+  let members = filter(tlist, 'has_key(v:val, "class") && ((v:val.kind == "f" || v:val.kind == "m" || v:val.kind == "p"))')
+  for member in members
+    let cname = substitute(member.class, '.*\.', '', '')
+    let mname = substitute(member.name, '.*\.', '', '')
+    let ttype = split(substitute(member.cmd, '\s*\<' . mname . '\>.*$', '', ''), '\s\+')[-1]
+    if index(g:cs_access_modifier, ttype) >= 0
+      let ttype = mname
+    endif
+    if has_key(defs, cname)
+      call add(defs[cname].members, dotnet#prop(mname, ttype))
+    endif
+  endfor
+
+  " add s:class
+  for [key, value] in items(defs)
+    let s:class[ key ] = value
+  endfor
+
+endfunction
 
 " load autoload/dotnet/.vim
 function! dotnet#load(sub)

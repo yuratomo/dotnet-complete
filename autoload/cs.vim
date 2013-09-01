@@ -11,3 +11,6 @@ function! cs#balloon()
   return dotnet#balloon()
 endfunction
 
+function! cs#loadFromTags()
+  return dotnet#loadFromTags()
+endfunction
