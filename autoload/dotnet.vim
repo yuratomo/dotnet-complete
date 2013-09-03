@@ -970,7 +970,7 @@ function! dotnet#loadFromTags()
     let idx += 1
     let tlist = taglist('^' . ptn . '.*')
 
-    call s:msg("tag load [' . ptn . ']. Please wait ... ")
+    call s:msg('tag load [' . ptn . ']. Please wait ... ')
 
     " classes
     let defs = {}
@@ -1039,11 +1039,10 @@ function! dotnet#load(sub)
     if file
       continue
     endif
-    exe 'echo "[dotnet-complete] load ' . substitute(file, '^.*\','','') . '"'
-    redraw
+    call s:msg('load ' . substitute(file, '^.*\','',''))
     exe 'so ' . file
   endfor
-  echo '[dotnet-complete] loaded!'
+  call s:msg('loadded')
   call remove(g:dotnet#delay_dirs, a:sub)
 endfunction
 
@@ -1064,11 +1063,10 @@ if !exists('s:dictionary_loaded')
     if file
       continue
     endif
-    exe 'echo "[dotnet-complete] load ' . substitute(file, '^.*\','','') . '"'
-    redraw
+    call s:msg('load ' . substitute(file, '^.*\','',''))
     exe 'so ' . file
   endfor
-  echo '[dotnet-complete] loaded!'
+  call s:msg('loadded')
   let s:dictionary_loaded = 1
 endif
 
