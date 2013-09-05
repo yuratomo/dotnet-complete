@@ -965,67 +965,83 @@ function! dotnet#loadFromTags()
 
   let idx = char2nr('a')
   let end = char2nr('z')
+  let defs = {}
   while idx <= end
     let ptn = nr2char(idx)
     let idx += 1
-    let tlist = taglist('^' . ptn . '.*')
 
     call s:msg('tag load [' . ptn . ']. Please wait ... ')
+    let tlist = taglist('^' . ptn . '.*')
 
     " classes
-    let defs = {}
-    for ttt in tlist
-      if ttt.kind == 'c'
-        let class = ttt
+    for titem in tlist
+      if titem.kind == 'c'
+        let class = titem
         let cname = substitute(class.name, '.*\.', '', '')
         let extend = ''
         if has_key(class, 'inherits')
           let extend = class.inherits
         endif
-        let defs[cname] = s:def_class(cname, extend, [])
 
-      elseif has_key(ttt, "class") && ((ttt.kind == "f" || ttt.kind == "m" || ttt.kind == "p"))
+        if has_key(defs, cname)
+          let defs[cname].extend = extend
+        else
+          let defs[cname] = s:def_class(cname, extend, [])
+        endif
+
+      elseif has_key(titem, "class") && ((titem.kind == "f" || titem.kind == "m" || titem.kind == "p"))
         " members
-        let member = ttt
+        let member = titem
         let cname = substitute(member.class, '.*\.', '', '')
         let mname = substitute(member.name, '.*\.', '', '')
         if mname =~ '^\~'
           continue
         endif
-        if has_key(defs, cname)
-          if !has_key(defs[cname], 'member_names')
-            let defs[cname].member_names = []
-          endif
-          if index(defs[cname].member_names, mname) == -1
-            let ttype = split(substitute(member.cmd, '\s*\<' . mname . '\>.*$', '', ''), '\s\+')[-1]
-            if index(g:cs_access_modifier, ttype) >= 0
-              let ttype = mname
-            endif
-            if has_key(member, 'signature')
-              let signature = member.signature
-              let item = dotnet#method(mname . '(', signature[1:], ttype)
-              let mname = mname . signature
-            else
-              let item = dotnet#prop(mname, ttype)
-            endif
-            call add(defs[cname].members, item)
-            call add(defs[cname].member_names, mname)
-          endif
-          call s:msg('tag load [' . ptn . '] ' . cname . '.' . mname)
+        if !has_key(defs, cname)
+          let defs[cname] = s:def_class(cname, '', [])
         endif
+
+        if !has_key(defs[cname], 'member_names')
+          let defs[cname].member_names = []
+        endif
+        if index(defs[cname].member_names, mname) == -1
+          try
+            let ttype = split(substitute(member.cmd, '\s*\<' . mname . '\>.*$', '', ''), '\s\+')[-1]
+          catch /.*/
+            let ttype = mname
+          endtry
+
+          if index(g:cs_access_modifier, ttype) >= 0
+            let ttype = mname
+          endif
+
+          if has_key(member, 'static') && member.static == 1
+            let ttype = 'static ' . ttype
+          endif
+
+          if has_key(member, 'signature')
+            let signature = member.signature
+            let item = dotnet#method(mname . '(', signature[1:], ttype)
+            let mname = mname . signature
+          else
+            let item = dotnet#prop(mname, ttype)
+          endif
+          call add(defs[cname].members, item)
+          call add(defs[cname].member_names, mname)
+        endif
+        call s:msg('tag load [' . ptn . '] ' . cname . '.' . mname)
       endif
     endfor
-
-    " add s:class
-    for [key, value] in items(defs)
-      if !has_key(s:class, key)
-        let s:class[ key ] = value
-      else
-        call extend( s:class[ key ].members, value.members )
-      endif
-    endfor
-
   endwhile
+
+  " add s:class
+  for [key, value] in items(defs)
+    if !has_key(s:class, key)
+      let s:class[ key ] = value
+    else
+      call extend( s:class[ key ].members, value.members )
+    endif
+  endfor
 
   call s:msg('tag loaded!')
 
