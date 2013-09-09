@@ -287,11 +287,9 @@ function! s:class_member_completion(base, res, type)
     if parts[0] == 'base'
       let type = super
     else
-"     let t = dotnet#getTag(type)
-"     if empty(t)
+      if !dotnet#isClassExist(type)
         let type = super
-"     endif
-"     let item = t
+      endif
     endif
   endif
 
@@ -309,8 +307,9 @@ function! s:class_member_completion(base, res, type)
 "         if exists('item')
 "           unlet item
 "         endif
-          break
+"         break
 "       endif
+        return
       else
         let item = dotnet#getEnum(class)
       endif
