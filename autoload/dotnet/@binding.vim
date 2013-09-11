@@ -29,3 +29,5 @@ call dotnet#bind('Binding', [
   \ ])
 call dotnet#bind('StaticBinding', [])
 call dotnet#bind('TemplateBinding ', [])
+call dotnet#bind('StaticResource ', [])
+call dotnet#bind('x:Type ', [])

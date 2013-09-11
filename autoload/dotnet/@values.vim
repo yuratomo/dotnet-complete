@@ -51,6 +51,11 @@ call dotnet#enum('Thickness', [
   \ dotnet#prop('10,10,10,10', ''),
   \ ])
 
+call dotnet#enum('Point', [
+  \ dotnet#prop('0,0', ''),
+  \ dotnet#prop('1,1', ''),
+  \ ])
+
 call dotnet#enum('Brush', [
   \ dotnet#prop('Transparent', ''),
   \ dotnet#prop('AliceBlue', ''),
