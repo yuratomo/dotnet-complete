@@ -17,6 +17,11 @@ Settings
     au BufNewFile,BufRead *.cs      setl bexpr=cs#balloon()
     au BufNewFile,BufRead *.cs      setl ballooneval
 
+Command
+-------
+
+###:DotnetCompleteLoadFromTag
+    :DotnetCompleteLoadFromTag
 
 ScreenShots
 -----------
