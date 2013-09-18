@@ -437,7 +437,7 @@ function! s:find_type(start_line, var)
             else
               let var_mode = 1
             endif
-          elseif var_mode == 1 && pre == 'new'
+          elseif var_mode == 1 && ( pre == 'new' || pre == 'as' )
             let result.class = s:conv_primitive(p)
             let result.mode = s:ROOT_IS_VAR
             return result
