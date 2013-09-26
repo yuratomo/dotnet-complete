@@ -253,7 +253,7 @@ function! dotnet#class_completion(base, res)
   endfor
 endfunction
 
-function! s:enum_member_completion(tag, base, res)
+function! s:enum_member_completion(tag, base, res, type)
   if !dotnet#isEnumExist(a:tag)
     return
   endif
@@ -261,7 +261,12 @@ function! s:enum_member_completion(tag, base, res)
   let item = dotnet#getEnum(a:tag)
   for member in item.members
    if member.name =~ '^' . a:base
-      call add(a:res, dotnet#member_to_compitem(item.name, member))
+      let newitem = dotnet#member_to_compitem(item.name, member)
+      if a:type == 1 && s:is_primitive(item.name) == 0
+        let newitem.word = item.name . "." . member.name
+        let newitem.abbr = s:abbr(newitem.word)
+      endif
+      call add(a:res, newitem)
     endif
   endfor
 endfunction
@@ -356,9 +361,9 @@ function! s:class_member_completion(base, res, type)
   if exists('item')
     if a:type == 0
       call s:attr_completion(item.name, a:base, a:res, 0)
-      call s:enum_member_completion(item.name, a:base, a:res)
+      call s:enum_member_completion(item.name, a:base, a:res, a:type)
     elseif a:type == 1
-      call s:enum_member_completion(item.name, a:base, a:res)
+      call s:enum_member_completion(item.name, a:base, a:res, a:type)
       if !has_key(s:primitive_dict, item.name)
         let newitem = dotnet#member_to_compitem('new ' . item.name . '(', {})
         let newitem.menu = 'create new instance'
@@ -496,13 +501,22 @@ endfunction
 let s:primitive_dict = {
   \ 'byte '  : 'Byte',
   \ 'sbyte ' : 'SByte',
+  \ 'int8'   : 'SByte',
+  \ 'uint8'  : 'Byte',
   \ 'short'  : 'Int16',
   \ 'ushort' : 'UInt16',
+  \ 'int16'  : 'Int16',
+  \ 'uint16' : 'UInt16',
   \ 'int'    : 'Int32',
   \ 'uint'   : 'UInt32',
+  \ 'int32'  : 'Int32',
+  \ 'uint32' : 'UInt32',
   \ 'long'   : 'Int64',
   \ 'ulong'  : 'UInt64',
+  \ 'int64'  : 'Int64',
+  \ 'uint64' : 'UInt64',
   \ 'float'  : 'Single',
+  \ 'float64': 'Double',
   \ 'double' : 'Double',
   \ 'char'   : 'Char',
   \ 'string' : 'String',
@@ -516,6 +530,18 @@ function! s:conv_primitive(str)
   else
     return a:str
   endif
+endfunction
+
+function! s:is_primitive(str)
+  if has_key(s:primitive_dict, a:str)
+    return 1
+  endif
+  for val in values(s:primitive_dict)
+    if val == a:str
+      return 1
+    endif
+  endfor
+  return 0
 endfunction
 
 function! s:attr_completion(tag, base, res, static)

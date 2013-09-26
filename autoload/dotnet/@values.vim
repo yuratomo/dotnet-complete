@@ -5,55 +5,125 @@ call dotnet#enum('GridLength', [
   \ dotnet#prop('10', ''),
   \ ])
 
-call dotnet#enum('bool', [
-  \ dotnet#prop('True', ''),
-  \ dotnet#prop('False', ''),
-  \ ])
+for type in ['bool', 'Boolean']
+  call dotnet#enum(type, [
+    \ dotnet#prop('true', ''),
+    \ dotnet#prop('false', ''),
+    \ dotnet#prop('Boolean.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('Boolean', [
-  \ dotnet#prop('true', ''),
-  \ dotnet#prop('false', ''),
-  \ ])
+for type in ['byte', 'uint8', 'Byte']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('Byte.MinValue', ''),
+    \ dotnet#prop('Byte.MaxValue', ''),
+    \ dotnet#prop('Byte.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('int32', [
-  \ dotnet#prop('0', ''),
-  \ dotnet#prop('1', ''),
-  \ dotnet#prop('100', ''),
-  \ dotnet#prop('200', ''),
-  \ ])
+for type in ['sbyte', 'int8', 'SByte']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('SByte.MinValue', ''),
+    \ dotnet#prop('SByte.MaxValue', ''),
+    \ dotnet#prop('SByte.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('Int32', [
-  \ dotnet#prop('0', ''),
-  \ dotnet#prop('1', ''),
-  \ dotnet#prop('100', ''),
-  \ dotnet#prop('200', ''),
-  \ ])
+for type in ['short', 'int16', 'Int16']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('Int16.MinValue', ''),
+    \ dotnet#prop('Int16.MaxValue', ''),
+    \ dotnet#prop('Int16.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('UInt32', [
-  \ dotnet#prop('0', ''),
-  \ dotnet#prop('1', ''),
-  \ dotnet#prop('100', ''),
-  \ dotnet#prop('200', ''),
-  \ ])
+for type in ['ushort', 'uint16', 'UInt16']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('UInt16.MinValue', ''),
+    \ dotnet#prop('UInt16.MaxValue', ''),
+    \ dotnet#prop('UInt16.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('float64', [
-  \ dotnet#prop('10.0', ''),
-  \ dotnet#prop('100.0', ''),
-  \ ])
+for type in ['int', 'int32', 'Int32']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('Int32.MinValue', ''),
+    \ dotnet#prop('Int32.MaxValue', ''),
+    \ dotnet#prop('Int32.Parse("', ''),
+    \ ])
+endfor
 
-call dotnet#enum('Single', [
-  \ dotnet#prop('10.0', ''),
-  \ dotnet#prop('100.0', ''),
-  \ ])
+for type in ['uint', 'uint32', 'UInt32']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('UInt32.MinValue', ''),
+    \ dotnet#prop('UInt32.MaxValue', ''),
+    \ dotnet#prop('UInt32.Parse("', ''),
+    \ ])
+endfor
+
+for type in ['long', 'int64', 'Int64']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('Int64.MinValue', ''),
+    \ dotnet#prop('Int64.MaxValue', ''),
+    \ dotnet#prop('Int64.Parse("', ''),
+    \ ])
+endfor
+
+for type in ['ulong', 'uint64', 'UInt64']
+  call dotnet#enum(type, [
+    \ dotnet#prop('0', ''),
+    \ dotnet#prop('1', ''),
+    \ dotnet#prop('UInt64.MinValue', ''),
+    \ dotnet#prop('UInt64.MaxValue', ''),
+    \ dotnet#prop('UInt64.Parse("', ''),
+    \ ])
+endfor
+
+for type in ['float']
+  call dotnet#enum(type, [
+    \ dotnet#prop('10.0', ''),
+    \ dotnet#prop('100.0', ''),
+    \ dotnet#prop('Single.MinValue', ''),
+    \ dotnet#prop('Single.MaxValue', ''),
+    \ dotnet#prop('Single.Parse("', ''),
+    \ ])
+endfor
+
+for type in ['float64', 'double', 'Double']
+  call dotnet#enum(type, [
+    \ dotnet#prop('10.0', ''),
+    \ dotnet#prop('100.0', ''),
+    \ dotnet#prop('Double.MinValue', ''),
+    \ dotnet#prop('Double.MaxValue', ''),
+    \ dotnet#prop('Double.Parse("', ''),
+    \ ])
+endfor
 
 call dotnet#enum('Thickness', [
   \ dotnet#prop('0,0,0,0', ''),
   \ dotnet#prop('10,10,10,10', ''),
   \ ])
 
+call dotnet#enum('Size', [
+  \ dotnet#prop('Parse("', ''),
+  \ ])
+
 call dotnet#enum('Point', [
   \ dotnet#prop('0,0', ''),
   \ dotnet#prop('1,1', ''),
+  \ dotnet#prop('Parse("', ''),
   \ ])
 
 call dotnet#enum('Brush', [
