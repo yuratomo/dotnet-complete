@@ -81,7 +81,7 @@ syn match dotnetLightCoral "\<LightCoral\>"
 syn match dotnetLightCyan "\<LightCyan\>"
 syn match dotnetLightGoldenRodYellow "\<LightGoldenRodYellow\>"
 syn match dotnetLightGreen "\<LightGreen\>"
-syn match dotnetLightGrey "\<LightGrey\>"
+syn match dotnetLightGrey "\<LightGray\>"
 syn match dotnetLightPink "\<LightPink\>"
 syn match dotnetLightSalmon "\<LightSalmon\>"
 syn match dotnetLightSeaGreen "\<LightSeaGreen\>"
@@ -254,7 +254,6 @@ hi dotnetWhite guifg=#000000 guibg=#FFFFFF
 hi dotnetWhiteSmoke guifg=#000000 guibg=#F5F5F5 
 hi dotnetYellow guifg=#000000 guibg=#FFFF00 
 hi dotnetYellowGreen guifg=#000000 guibg=#9ACD32 
-
 hi dotnetBrown guifg=#FFFFFF guibg=#A52A2A 
 hi dotnetCrimson guifg=#FFFFFF guibg=#DC143C 
 hi dotnetDarkBlue guifg=#FFFFFF guibg=#00008B 
