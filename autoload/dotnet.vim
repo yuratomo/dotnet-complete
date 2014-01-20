@@ -947,10 +947,19 @@ function! dotnet#checkLineForRef()
   endif
 endfunction
 
+function! dotnet#reshowRef()
+  if exists("b:ref")
+    if b:ref.line == line('.')
+      call dotnet#showRef()
+    endif
+  endif
+endfunction
+
 function! dotnet#clearRef()
   let &l:statusline = g:dotnet#statusline
   augroup dotnetapi
     au!
+    au InsertEnter  <buffer> call dotnet#reshowRef()
   augroup END
 endfunction
 
