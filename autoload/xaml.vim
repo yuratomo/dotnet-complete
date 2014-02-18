@@ -151,7 +151,9 @@ function! s:attr_completion(tag, base, res)
   let item = dotnet#getClass(a:tag)
   for member in item.members
     if member.name =~ '^' . a:base && !dotnet#isMethod(member)
-      call add(a:res, dotnet#member_to_compitem(item.name, member))
+      let m = copy(member)
+      let m.name = m.name . '="'
+      call add(a:res, dotnet#member_to_compitem(item.name, m))
     endif
   endfor
 
@@ -192,7 +194,9 @@ function! s:value_completion(tag, prop, base, res)
     let enum = dotnet#getEnum(mtype.class)
     for member in enum.members
       if member.name =~ '^' . a:base
-        call add(a:res, dotnet#member_to_compitem(member.name, member))
+        let m = copy(member)
+        let m.name = m.name . '"'
+        call add(a:res, dotnet#member_to_compitem(member.name, m))
       endif
     endfor
   endif
